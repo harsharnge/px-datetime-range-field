@@ -193,9 +193,12 @@ function runBasicTests(now, weekAgo){
         toDateInput = Polymer.dom(toDate.root).querySelector('#dtImport'),
         toTimeInput = Polymer.dom(toTime.root).querySelector('#dtImport');
 
-    test('state appiled to fromFields',function(){
+    test('state appiled to fromFields',function(done){
       fromDateInput.focus();
-      assert.isTrue(fromFields.classList.contains('is-focused'));
+      flush(function(){
+        assert.isTrue(fromFields.classList.contains('is-focused'));
+        done();
+      });
     });
     test('state not appiled to toFields',function(){
       assert.isFalse(toFields.classList.contains('is-focused'));
@@ -376,9 +379,11 @@ function updateDate(parent, elem, date, format, field){
     test('update '+elem,function(){
       assert.equal(elemDate.moment.format(format),date);
     });
-
-    test('added changed class',function(){
-      assert.isTrue(elemDiv.classList.contains('validation-changed'));
+    test('added changed class',function(done){
+      flush(function(){
+        assert.isTrue(elemDiv.classList.contains('validation-changed'));
+        done();
+      })
     });
   });
 }
