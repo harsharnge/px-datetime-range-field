@@ -515,15 +515,15 @@ function fireButtonClickCancel(elem){
 }
 
 function fireKeyboardEnter(elem){
-  var kbe = document.createEvent("KeyboardEvent");
-  var evt = kbe.initKeyboardEvent("keydown", true, true, window, "Enter", false, false, false, false);
+  var evt = new CustomEvent('keydown',{detail:{'key':"Enter",'keyIdentifier':"Enter"}});
+  // KeyboardEvent doesnt work in IE11
   //  var evt = new KeyboardEvent("keydown", {code: "Enter", keyIdentifier:"Enter", key:"Enter" });
    elem.dispatchEvent(evt);
 }
 
 function fireKeyboardEsc(elem){
-  var kbe = document.createEvent("KeyboardEvent");
-  var evt = kbe.initKeyboardEvent("keydown", true, true, window, "Enter", false, false, false, false);
+
+  var evt = new CustomEvent('keydown',{detail:{'key':"Esc",'keyIdentifier':"Enter"}});
   //  var evt = new KeyboardEvent("keydown", {code:'Esc',keyIdentifier:'Esc',key:'Esc'});
    elem.dispatchEvent(evt);
 }
