@@ -114,16 +114,16 @@ function runBasicTests(now, weekAgo){
   });
 
   suite('Test Applying a new datetime', function() {
-    updateDate(basic,'fromDate','05/04/2013','MM/DD/YYYY','from');
+    updateDate(basic,'fromDate','05/04/2013','MM/DD/YYYY','from', 'Test Applying a new datetime');
     applyDate(basic,'fromDate','from');
 
-    updateDate(basic,'fromTime','12:00:00 PM','hh:mm:ss A','from');
+    updateDate(basic,'fromTime','12:00:00 PM','hh:mm:ss A','from', 'Test Applying a new datetime');
     applyDate(basic,'fromTime','from');
 
-    updateDate(basic,'toDate','09/14/2014','MM/DD/YYYY','to');
+    updateDate(basic,'toDate','09/14/2014','MM/DD/YYYY','to', 'Test Applying a new datetime');
     applyDate(basic,'toDate','to');
 
-    updateDate(basic,'toTime','12:00:00 PM','hh:mm:ss A','to');
+    updateDate(basic,'toTime','12:00:00 PM','hh:mm:ss A','to', 'Test Applying a new datetime');
     applyDate(basic,'toTime','to');
 
     suite('Wait until success class clears', function() {
@@ -131,41 +131,39 @@ function runBasicTests(now, weekAgo){
         var assertions = function(){
           done();
         }
-        setTimeout(function(){
-          assertions();
-        },1000);
+        setTimeout(assertions,1000);
       });
     });
   });
 
   suite('Test Canceling a new datetime', function() {
-    updateDate(basic,'fromDate','06/04/2013','MM/DD/YYYY','from');
+    updateDate(basic,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Canceling a new datetime');
     cancelDate(basic,'fromDate','from');
 
-    updateDate(basic,'fromTime','01:00:00 PM','hh:mm:ss A','from');
+    updateDate(basic,'fromTime','01:00:00 PM','hh:mm:ss A','from','Test Canceling a new datetime');
     cancelDate(basic,'fromTime','from');
 
-    updateDate(basic,'toDate','10/14/2014','MM/DD/YYYY','to');
+    updateDate(basic,'toDate','10/14/2014','MM/DD/YYYY','to','Test Canceling a new datetime');
     cancelDate(basic,'toDate','to');
 
-    updateDate(basic,'toTime','01:00:00 PM','hh:mm:ss A','to');
+    updateDate(basic,'toTime','01:00:00 PM','hh:mm:ss A','to','Test Canceling a new datetime');
     cancelDate(basic,'toTime','to');
   });
 
   suite('Test Canceling a new datetime', function() {
-    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from');
+    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test Canceling a new datetime');
     invalidDate(basic,'fromDate','from');
 
-    updateDate(basic,'toDate','10/14/2012','MM/DD/YYYY','to');
+    updateDate(basic,'toDate','10/14/2012','MM/DD/YYYY','to','Test Canceling a new datetime');
     invalidDate(basic,'toDate','to');
   });
 
   suite('Test keyboard events', function() {
-    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from');
+    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test keyboard events');
     invalidDate(basic,'fromDate','from');
     escDate(basic,'fromDate','from');
 
-    updateDate(basic,'fromDate','05/04/2010','MM/DD/YYYY','from');
+    updateDate(basic,'fromDate','05/04/2010','MM/DD/YYYY','from','Test keyboard events');
     enterDate(basic,'fromDate','from');
 
     suite('Wait until success class clears', function() {
@@ -173,9 +171,7 @@ function runBasicTests(now, weekAgo){
         var assertions = function(){
           done();
         }
-        setTimeout(function(){
-          assertions();
-        },1000);
+        setTimeout(assertions,1000);
       });
     });
   });
@@ -194,28 +190,32 @@ function runBasicTests(now, weekAgo){
         toTimeInput = Polymer.dom(toTime.root).querySelector('#dtImport');
 
     test('state appiled to fromFields',function(){
-      fromDateInput.focus();
+      var evt = new CustomEvent('focus');
+      fromDateInput.dispatchEvent(evt);
       assert.isTrue(fromFields.classList.contains('is-focused'));
     });
     test('state not appiled to toFields',function(){
       assert.isFalse(toFields.classList.contains('is-focused'));
     });
     test('focus moves to fromTime; fromFields state remains',function(){
-      fromTimeInput.focus();
+      var evt = new CustomEvent('focus');
+      fromTimeInput.dispatchEvent(evt);
       assert.isTrue(fromFields.classList.contains('is-focused'));
     });
     test('toFields focus remains',function(){
       assert.isFalse(toFields.classList.contains('is-focused'));
     });
     test('focus moves to toDate; toFields gets state',function(){
-      toDateInput.focus();
+      var evt = new CustomEvent('focus');
+      toDateInput.dispatchEvent(evt);
       assert.isTrue(toFields.classList.contains('is-focused'));
     });
     test('fromFields looses class',function(){
       assert.isFalse(fromFields.classList.contains('is-focused'));
     });
     test('focus moves to toTime; toFields keeps class',function(){
-      toDateInput.focus();
+      var evt = new CustomEvent('focus');
+      toDateInput.dispatchEvent(evt);
       assert.isTrue(toFields.classList.contains('is-focused'));
     });
     test('fromFields doesnt change',function(){
@@ -302,7 +302,7 @@ function runButtonsTests(){
       });
     });
 
-    updateDate(datetimeButtonsDisplayOptionOnfocus,'fromDate','06/04/2013','MM/DD/YYYY','from');
+    updateDate(datetimeButtonsDisplayOptionOnfocus,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Applying a new datetime');
 
     suite('buttons are shown',function(){
       test('buttons shown',function(){
@@ -324,7 +324,7 @@ function runAutoSubmitTests(){
   var autoSubmit = document.getElementById('autoSubmit');
   checkIfElemExists(autoSubmit,'autoSubmit');
 
-  updateDate(autoSubmit,'fromDate','06/04/2013','MM/DD/YYYY','from');
+  updateDate(autoSubmit,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Applying a new datetime');
 
   suite('it auto submitted',function(){
     test('from updated',function(done){
@@ -363,8 +363,8 @@ function checkIfElemExists(elem,str) {
   });
 }
 
-function updateDate(parent, elem, date, format, field){
-  suite('Update ' + elem, function() {
+function updateDate(parent, elem, date, format, field, text){
+  suite('Update ' + elem + text, function() {
     var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
     var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
 
@@ -376,7 +376,6 @@ function updateDate(parent, elem, date, format, field){
     test('update '+elem,function(){
       assert.equal(elemDate.moment.format(format),date);
     });
-
     test('added changed class',function(){
       assert.isTrue(elemDiv.classList.contains('validation-changed'));
     });
@@ -441,9 +440,7 @@ function invalidDate(parent, elem, field){
         done();
       }
 
-      setTimeout(function(){
-        assertions();
-      },50);
+      setTimeout(assertions,50);
     });
 
     test('added invalid class',function(){
@@ -467,9 +464,7 @@ function enterDate(parent, elem, field){
         done();
       }
 
-      setTimeout(function(){
-        assertions();
-      },50);
+      setTimeout(assertions,50);
     });
 
     test('added applied class',function(){
@@ -515,11 +510,12 @@ function fireButtonClickCancel(elem){
 }
 
 function fireKeyboardEnter(elem){
-   var evt = new KeyboardEvent("keydown", {code: "Enter", keyIdentifier:"Enter", key:"Enter" });
+  var evt = new CustomEvent('keydown',{detail:{'key':"Enter",'keyIdentifier':"Enter"}});
    elem.dispatchEvent(evt);
 }
 
 function fireKeyboardEsc(elem){
-   var evt = new KeyboardEvent('keydown', {code:'Esc',keyIdentifier:'Esc',key:'Esc'});
+
+  var evt = new CustomEvent('keydown',{detail:{'key':"Esc",'keyIdentifier':"Enter"}});
    elem.dispatchEvent(evt);
 }
