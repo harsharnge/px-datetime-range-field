@@ -131,9 +131,7 @@ function runBasicTests(now, weekAgo){
         var assertions = function(){
           done();
         }
-        setTimeout(function(){
-          assertions();
-        },1000);
+        setTimeout(assertions,1000);
       });
     });
   });
@@ -173,9 +171,7 @@ function runBasicTests(now, weekAgo){
         var assertions = function(){
           done();
         }
-        setTimeout(function(){
-          assertions();
-        },1000);
+        setTimeout(assertions,1000);
       });
     });
   });
@@ -193,32 +189,33 @@ function runBasicTests(now, weekAgo){
         toDateInput = Polymer.dom(toDate.root).querySelector('#dtImport'),
         toTimeInput = Polymer.dom(toTime.root).querySelector('#dtImport');
 
-    test('state appiled to fromFields',function(done){
-      fromDateInput.focus();
-      flush(function(){
-        assert.isTrue(fromFields.classList.contains('is-focused'));
-        done();
-      });
+    test('state appiled to fromFields',function(){
+      var evt = new CustomEvent('focus');
+      fromDateInput.dispatchEvent(evt);
+      assert.isTrue(fromFields.classList.contains('is-focused'));
     });
     test('state not appiled to toFields',function(){
       assert.isFalse(toFields.classList.contains('is-focused'));
     });
     test('focus moves to fromTime; fromFields state remains',function(){
-      fromTimeInput.focus();
+      var evt = new CustomEvent('focus');
+      fromTimeInput.dispatchEvent(evt);
       assert.isTrue(fromFields.classList.contains('is-focused'));
     });
     test('toFields focus remains',function(){
       assert.isFalse(toFields.classList.contains('is-focused'));
     });
     test('focus moves to toDate; toFields gets state',function(){
-      toDateInput.focus();
+      var evt = new CustomEvent('focus');
+      toDateInput.dispatchEvent(evt);
       assert.isTrue(toFields.classList.contains('is-focused'));
     });
     test('fromFields looses class',function(){
       assert.isFalse(fromFields.classList.contains('is-focused'));
     });
     test('focus moves to toTime; toFields keeps class',function(){
-      toDateInput.focus();
+      var evt = new CustomEvent('focus');
+      toDateInput.dispatchEvent(evt);
       assert.isTrue(toFields.classList.contains('is-focused'));
     });
     test('fromFields doesnt change',function(){
@@ -443,9 +440,7 @@ function invalidDate(parent, elem, field){
         done();
       }
 
-      setTimeout(function(){
-        assertions();
-      },50);
+      setTimeout(assertions,50);
     });
 
     test('added invalid class',function(){
@@ -469,9 +464,7 @@ function enterDate(parent, elem, field){
         done();
       }
 
-      setTimeout(function(){
-        assertions();
-      },50);
+      setTimeout(assertions,50);
     });
 
     test('added applied class',function(){
