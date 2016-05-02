@@ -137,33 +137,33 @@ function runBasicTests(now, weekAgo){
   });
 
   suite('Test Canceling a new datetime', function() {
-    updateDate(basic,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Applying a new datetime');
+    updateDate(basic,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Canceling a new datetime');
     cancelDate(basic,'fromDate','from');
 
-    updateDate(basic,'fromTime','01:00:00 PM','hh:mm:ss A','from','Test Applying a new datetime');
+    updateDate(basic,'fromTime','01:00:00 PM','hh:mm:ss A','from','Test Canceling a new datetime');
     cancelDate(basic,'fromTime','from');
 
-    updateDate(basic,'toDate','10/14/2014','MM/DD/YYYY','to','Test Applying a new datetime');
+    updateDate(basic,'toDate','10/14/2014','MM/DD/YYYY','to','Test Canceling a new datetime');
     cancelDate(basic,'toDate','to');
 
-    updateDate(basic,'toTime','01:00:00 PM','hh:mm:ss A','to','Test Applying a new datetime');
+    updateDate(basic,'toTime','01:00:00 PM','hh:mm:ss A','to','Test Canceling a new datetime');
     cancelDate(basic,'toTime','to');
   });
 
   suite('Test Canceling a new datetime', function() {
-    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test Applying a new datetime');
+    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test Canceling a new datetime');
     invalidDate(basic,'fromDate','from');
 
-    updateDate(basic,'toDate','10/14/2012','MM/DD/YYYY','to','Test Applying a new datetime');
+    updateDate(basic,'toDate','10/14/2012','MM/DD/YYYY','to','Test Canceling a new datetime');
     invalidDate(basic,'toDate','to');
   });
 
   suite('Test keyboard events', function() {
-    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test Applying a new datetime');
+    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test keyboard events');
     invalidDate(basic,'fromDate','from');
     escDate(basic,'fromDate','from');
 
-    updateDate(basic,'fromDate','05/04/2010','MM/DD/YYYY','from','Test Applying a new datetime');
+    updateDate(basic,'fromDate','05/04/2010','MM/DD/YYYY','from','Test keyboard events');
     enterDate(basic,'fromDate','from');
 
     suite('Wait until success class clears', function() {
