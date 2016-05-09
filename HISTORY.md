@@ -1,7 +1,10 @@
+v0.1.3
+==================
+* added pull request test for travis and updated OSS Notice
+
 v0.1.2
 ==================
-* added passing of displayOptions for buttons
-
+* added passing of displayOptions for buttons\
 
 v0.1.1
 ==================
