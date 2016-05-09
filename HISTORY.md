@@ -1,3 +1,8 @@
+v0.1.2
+==================
+* added passing of displayOptions for buttons
+
+
 v0.1.1
 ==================
 * updated tests for attrs
