@@ -20,13 +20,14 @@ Px datetime component that displays and validates a date time range.
   <link rel="import" type="css" href="css/px-datetime-range-field.css"/>
   <template>
     <div class="form flex flex--middle flex--wrap">
-      <div id="fromFields" class="flex flex--middle text-input ">
+      <div id="fromFields" class="flex flex--middle text-input fields">
         <span class=a11y>from</span>
         <px-datetime-entry
           id="fromDate"
           is-valid="{{validStartDate}}"
           neighbor-valid="[[validStartTime]]"
-          moment="{{fromMoment}}"
+          moment-obj="{{fromMoment}}"
+          moment-format="[[dateFormat]]"
           date-or-time="Date"
           class="flex u-mr-"
           is-submit-button-valid="{{isSubmitButtonValid}}">
@@ -35,19 +36,21 @@ Px datetime component that displays and validates a date time range.
           id="fromTime"
           is-valid="{{validStartTime}}"
           neighbor-valid="[[validStartDate]]"
-          moment="{{fromMoment}}"
+          moment-obj="{{fromMoment}}"
+          moment-format="[[timeFormat]]"
           date-or-time="Time"
           class="flex"
           is-submit-button-valid="{{isSubmitButtonValid}}">
         </px-datetime-entry>
       </div>
       <span class="caps u-mh-">to</span>
-      <div id="toFields" class="flex flex--middle text-input u-mr+ ">
+      <div id="toFields" class="flex flex--middle text-input u-mr+ fields">
         <px-datetime-entry
           id="toDate"
           is-valid="{{validEndDate}}"
           neighbor-valid="[[validEndTime]]"
-          moment="{{toMoment}}"
+          moment-obj="{{toMoment}}"
+          moment-format="[[dateFormat]]"
           date-or-time="Date"
           class="flex u-mr-"
           is-submit-button-valid="{{isSubmitButtonValid}}">
@@ -56,7 +59,8 @@ Px datetime component that displays and validates a date time range.
           id="toTime"
           is-valid="{{validEndTime}}"
           neighbor-valid="[[validEndDate]]"
-          moment="{{toMoment}}"
+          moment-obj="{{toMoment}}"
+          moment-format="[[timeFormat]]"
           date-or-time="Time"
           class="flex"
           is-submit-button-valid="{{isSubmitButtonValid}}">
@@ -131,7 +135,7 @@ Px datetime component that displays and validates a date time range.
        *
        * String to decide whether to show buttons at all times or only show onfocus in a field
        * - 'show' - Buttons are shown at all times
-       * - 'onfocus'- Buttons are not visible until cursor is in the field
+       * - 'onedit'- Buttons are not visible until a change is made to the field
        *
        * @default show (buttons are shown all the time)
        *
@@ -176,7 +180,18 @@ Px datetime component that displays and validates a date time range.
       showSuccessClass:{
         type: Boolean,
         value: false
-      }
+      },
+      /**
+       * A flag that turns on inline edit, changing the input styles
+       *
+       * @property inlineEdit
+       * @type Boolean
+       * @default false
+       */
+      inlineEdit: {
+        type: Boolean,
+        value: true
+      },
     },
 
     observers: [
@@ -198,6 +213,19 @@ Px datetime component that displays and validates a date time range.
       // TODO set a dev set attrb to enable or disable visual indication if changed
       // TODO set a dev set attrb to enable or disable visual indication if submitted && move it from hard coded in validate to an event like this
       this.listen(this, 'moment-changed', '_addChangedClass');
+
+      if(this.inlineEdit){
+        this.toggleClass('text-input', false, this.$.fromFields);
+        this.toggleClass('text-input', false, this.$.toFields);
+
+        this.listen(this, 'cell-focused', '_handleFocus');
+        this.listen(this, 'cell-blured', '_handleBlur');
+      }
+    },
+
+    detached: function(){
+      this.unlisten(this, 'cell-focused', '_handleFocus');
+      this.unlisten(this, 'cell-blured', '_handleBlur');
     },
     /**
      * Helper function for px-datetime-buttons.html class attribute
@@ -208,7 +236,7 @@ Px datetime component that displays and validates a date time range.
      * @return {String} visuallyhidden class or ' '
      */
     _addHiddenClass: function(datetimeButtonsDisplayOption){
-      if(datetimeButtonsDisplayOption.toLowerCase() === 'onfocus'){
+      if(datetimeButtonsDisplayOption.toLowerCase() === 'onedit'){
         return 'visuallyhidden';
       }
       return '';
@@ -323,7 +351,7 @@ Px datetime component that displays and validates a date time range.
     _removeChangedClass: function() {
       this.toggleClass('validation-changed', false, this.$$('#toFields'));
       this.toggleClass('validation-changed', false, this.$$('#fromFields'));
-      if(this.datetimeButtonsDisplayOption === 'onfocus'){
+      if(this.datetimeButtonsDisplayOption === 'onedit'){
         this.toggleClass('visuallyhidden', true, this.$$('#dtBtns'));
       }
     },
@@ -419,6 +447,31 @@ Px datetime component that displays and validates a date time range.
         this._setRange();
       }
       e.stopPropagation();
+    },
+
+    _handleFocus: function(evt){
+      this._toggleTextInput(evt)
+    },
+    _handleBlur: function(evt){
+      this._toggleTextInput(evt)
+      this._validateInput();
+    },
+
+    _toggleTextInput: function(e,bool){
+      var ne = Polymer.dom(e);
+      var elem = this._findField(ne.path);
+      console.log(elem);
+      // this.toggleClass('text-input', true, this.$.wrapper);
+      e.stopPropagation();
+    },
+
+    _findField: function(arr){
+      for(var i in arr){
+        console.log(arr[i]);
+        if(arr[i].classList.contains('fields')){
+          return arr[i];
+        }
+      }
     }
 
   });
