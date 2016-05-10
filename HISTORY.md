@@ -1,3 +1,8 @@
+v0.1.4
+==================
+* added tests for displayOptions for buttons
+
+
 v0.1.3
 ==================
 * added pull request test for travis and updated OSS Notice
