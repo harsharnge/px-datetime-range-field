@@ -27,6 +27,9 @@ function runBasicTests(now, weekAgo){
         fromTime = Polymer.dom(basic.root).querySelector('#fromTime'),
         toDate = Polymer.dom(basic.root).querySelector('#toDate'),
         toTime = Polymer.dom(basic.root).querySelector('#toTime');
+        submitButton = basic.querySelector('#submitButton');
+        buttonIcon = basic.querySelector('#submitButton').children;
+
 
     checkIfElemExists(basic,'basic');
 
@@ -57,6 +60,23 @@ function runBasicTests(now, weekAgo){
       });
       test('autoSubmit',function(){
         assert.isFalse(basic.autoSubmit);
+      });
+      test('displayoptions',function(){
+      assert.equal(basic.displayOptions.submitButtonText,"Click Here");
+      assert.equal(basic.displayOptions.submitButtonIcon,"fa fa-hand-pointer-o");
+      });
+      test('submit button has icon',function(){
+	  assert.isTrue(buttonIcon.length>0);
+	  assert.equal(buttonIcon[0].tagName,"I");
+	  assert.equal(buttonIcon[0].classList[0],'fa');
+	  assert.equal(buttonIcon[0].classList[1],'fa-hand-pointer-o');
+
+      
+      });
+      test('submit button text is click here',function(){
+     
+      assert.equal(submitButton.textContent.replace(/(\r\n|\n|\r)/gm,"").trim(),'Click Here');
+
       });
     });
 
