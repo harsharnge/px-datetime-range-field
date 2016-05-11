@@ -1,7 +1,10 @@
+v0.1.5
+==================
+* added oss_notice to bower ignore
+
 v0.1.4
 ==================
 * added tests for displayOptions for buttons
-
 
 v0.1.3
 ==================
