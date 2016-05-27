@@ -17,7 +17,8 @@
     "moment": "#~2.10.6",
     "polymer": "#~1.4.0",
     "px-theme": "#~0.7.0",
-    "px-datetime-common": "https://github.com/PredixDev/px-datetime-common.git#~0.0.1"
+    "px-datetime-common": "https://github.com/PredixDev/px-datetime-common.git#~0.2.1",
+    "px-datetime-field": "~0.1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
@@ -28,6 +29,6 @@
   "resolutions": {
     "polymer": "~1.4.0",
     "px-theme": "~0.7.0",
-    "px-viewport-design": "~0.4.1"
+    "px-viewport-design": "~0.4.6"
   }
 }
