@@ -799,15 +799,14 @@ textarea {
 .text-input {
   width: auto; }
 
-#fromFields,
-#toFields,
-.validation-error,
-.validation-warning,
-.validation-success {
-  transition: .2s; }
+.validation-container {
+  cursor: pointer;
+  margin-left: auto; }
 
-.validation-changed {
-  border-color: #e8a736; }
+.validation-container__icon {
+  width: 0.8666666667rem;
+  height: 0.8666666667rem;
+  vertical-align: text-top; }
 
 /**
  * Margin and padding helper classes. Use these to tweak layout on a micro
@@ -925,3 +924,6 @@ textarea {
 .u-mv0 {
   margin-top: 0 !important;
   margin-bottom: 0 !important; }
+
+.validation-container__icon--failed {
+  color: #e53838; }
