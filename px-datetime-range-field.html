@@ -1,10 +1,13 @@
 <link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../px-datetime-common/px-datetime-imports.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-entry.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-behavior.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-range-behavior.html"/>
+<link rel="import" href="../px-datetime-common/px-datetime-button-behavior.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-buttons.html"/>
+<link rel="import" href="../px-datetime-field/px-datetime-field.html"/>
 <link rel="import" href="../px-datetime-common/validate.html"/>
-<script src="../moment/moment.js"></script>
+<!-- <script src="../moment/moment.js"></script> -->
 
 <!--
 Px datetime component that displays and validates a date time range.
@@ -20,49 +23,49 @@ Px datetime component that displays and validates a date time range.
   <link rel="import" type="css" href="css/px-datetime-range-field.css"/>
   <template>
     <div class="form flex flex--middle flex--wrap">
-      <div id="fromFields" class="flex flex--middle text-input ">
+      <div id="fromFields" class="flex flex--middle">
         <span class=a11y>from</span>
-        <px-datetime-entry
+        <px-datetime-field
           id="fromDate"
-          is-valid="{{validStartDate}}"
-          neighbor-valid="[[validStartTime]]"
-          moment="{{fromMoment}}"
-          date-or-time="Date"
-          class="flex u-mr-"
-          is-submit-button-valid="{{isSubmitButtonValid}}">
-        </px-datetime-entry>
-        <px-datetime-entry
-          id="fromTime"
-          is-valid="{{validStartTime}}"
-          neighbor-valid="[[validStartDate]]"
-          moment="{{fromMoment}}"
-          date-or-time="Time"
-          class="flex"
-          is-submit-button-valid="{{isSubmitButtonValid}}">
-        </px-datetime-entry>
+          moment-obj="{{fromMoment}}"
+          date-format="[[dateFormat]]"
+          time-format="[[timeFormat]]"
+          show-time-zone="[[showTimeZone]]"
+          hide-time="[[hideTime]]"
+          hide-date="[[hideDate]]"
+          is-valid="{{_fromValid}}">
+        </px-datetime-field>
       </div>
       <span class="caps u-mh-">to</span>
-      <div id="toFields" class="flex flex--middle text-input u-mr+ ">
-        <px-datetime-entry
+      <div id="toFields" class="flex flex--middle u-mr+">
+        <px-datetime-field
           id="toDate"
-          is-valid="{{validEndDate}}"
-          neighbor-valid="[[validEndTime]]"
-          moment="{{toMoment}}"
-          date-or-time="Date"
-          class="flex u-mr-"
-          is-submit-button-valid="{{isSubmitButtonValid}}">
-        </px-datetime-entry>
-        <px-datetime-entry
-          id="toTime"
-          is-valid="{{validEndTime}}"
-          neighbor-valid="[[validEndDate]]"
-          moment="{{toMoment}}"
-          date-or-time="Time"
-          class="flex"
-          is-submit-button-valid="{{isSubmitButtonValid}}">
-        </px-datetime-entry>
+          moment-obj="{{toMoment}}"
+          date-format="[[dateFormat]]"
+          time-format="[[timeFormat]]"
+          show-time-zone="[[showTimeZone]]"
+          hide-time="[[hideTime]]"
+          hide-date="[[hideDate]]"
+          is-valid="{{_toValid}}">
+        </px-datetime-field>
+        <template is="dom-if" if="{{!isValid}}">
+          <div class="fa fa-fw validation-container">
+            <iron-icon class$="{{_getValidationIconClass(isValid)}}"
+              icon="polymer-font-awesome:fa-warning">
+            </iron-icon>
+            <template is="dom-if" if="{{!isValid}}">
+              <px-tooltip
+                class="tooltip-font"
+                smart-orientation
+                orientation="top"
+                tooltip-message="{{validationErrorMessage}}">
+              </px-tooltip>
+            </template>
+          </div>
+        </template>
       </div>
-      <template is="dom-if" if="{{_showRangeFieldButtons(datetimeButtonsDisplay)}}">
+
+      <template is="dom-if" if="{{showButtons}}">
         <px-datetime-buttons
           id="dtBtns"
           class$="{{_addHiddenClass(datetimeButtonsDisplayOption)}}"
@@ -82,108 +85,86 @@ Px datetime component that displays and validates a date time range.
     is: 'px-datetime-range-field',
 
     behaviors: [
-      pxDatetimeBehavior,
       pxDatetimeRangeBehavior,
+      pxDatetimeButtonBehavior,
       validate
     ],
 
     properties: {
       /**
-       * Boolean set when all field pass validation
+       * Moment format string for the DATE format to display/validate this field against
+       * (see http://momentjs.com/docs/#/parsing/string-format/)
        *
-       * @private
        */
-      allFieldsValid: {
-        type: Boolean,
-        value: true,
-        notify: true
+      dateFormat: {
+          type: String,
+          value: 'YYYY-MM-DD'
       },
       /**
-       * (optional)
+       * Moment format string for the TIME format to display/validate this field against
+       * (see http://momentjs.com/docs/#/parsing/string-format/)
        *
-       * - 'yes' - clears invalid dates onfocus
-       * - 'no' - keeps invalid dates editable
-       *
-       * @default yes
        */
-      clearInvalid:{
-        type:String,
-        value:'yes'
+      timeFormat: {
+          type: String,
+          value: 'HH:mm:ss A'
       },
       /**
-       * (optional)
        *
-       * String to decide whether to show or hide submit and cancel buttons in the range fields
-       * - 'show-all' - Buttons are shown at all times
-       * - 'hide-submit' - Submit button is hidden; only cancel button is shown
-       * - 'hide-cancel'- Cancel button is hidden; only submit button is shown
-       * - 'hide-all' - hides both (only shortcut keys can be used)
-       *
-       * @default show-all (both buttons are shown)
-       *
+       * Can be set to show the timezone. Can have 2 values:
+       *  'dropdown': shows the time zone as a dropdown which the user can use to
+       * select a different time zone. Only contains a subset of all timezones
+       *  'extendedDropdown': shows the time zone as a dropdown which the user can use to
+       * select a different time zone. Contains all existing timezones (588)
+       *  'text': shows the time zone as text, non editable
+       *  'abbreviatedText': shows the time zone as an abbreviated text, non editable (such as PST, EST...)
        */
-      datetimeButtonsDisplay:{
+      showTimeZone: {
         type: String,
-        value: 'show-all',
-        notify: true
+        value: ''
       },
       /**
-       * (optional)
-       *
-       * String to decide whether to show buttons at all times or only show onfocus in a field
-       * - 'show' - Buttons are shown at all times
-       * - 'onfocus'- Buttons are not visible until cursor is in the field
-       *
-       * @default show (buttons are shown all the time)
-       *
+       * Controls whether time is displayed in this field
        */
-      datetimeButtonsDisplayOption:{
-        type: String,
-        value: 'show',
-        notify: true
-      },
-      /**
-       * (optional)
-       *
-       * Bool to decide whether updated valid entries are automatically applied.
-       * - true - changes automatically are applied. Recommend hiding buttons if this is used.
-       * - false - changes are not applied until a submit button or enter key are pressed
-       *
-       */
-      autoSubmit:{
+      hideTime: {
         type: Boolean,
         value: false
       },
       /**
-       * (optional)
-       *
-       * Bool to decide whether to show the 'validation-changed' class when there has been a change on the input but has not been submitted
-       * - true - 'validation-changed' class will appear when there has been a change on the input but has not been submitted
-       * - false - 'validation-changed' class will not appear
-       *
+       * Controls whether date should be hidden in this field. Typically used
+       * in combination with hideTime to make the field showing only the time
        */
-      showChangedClass:{
+      hideDate: {
         type: Boolean,
         value: false
       },
       /**
-       * (optional)
-       *
-       * Bool to decide whether to show the 'validation-success' class when the input but has been submitted
-       * - true - 'validation-success' class will appear when the input but has been submitted
-       * - false - 'validation-success' class will not appear
+       * If showing only the date whether the date is valid, if showing only the
+       * time whetehr the time is valid, if showing both whether both are valids
        *
        */
-      showSuccessClass:{
+      isValid: {
+        type: Boolean,
+        computed: '_getIsValid(_fromValid, _toValid, fromMoment, toMoment)'
+      },
+      /**
+       *
+       */
+      _fromValid: {
+        type: Boolean,
+        value: true
+      },
+      /**
+       *
+       */
+      _toValid: {
         type: Boolean,
         value: false
       }
     },
 
     observers: [
-      '_validateRangeAndBroadcastChanges(fromMoment, toMoment, allFieldsValid)',
-      '_allFieldsValid( validStartDate, validStartTime, validEndDate, validEndTime )',
-      '_setRange(range)'
+      // '_validateRangeAndBroadcastChanges(fromMoment, toMoment, isValid)'
     ],
 
     /**
@@ -191,202 +172,11 @@ Px datetime component that displays and validates a date time range.
      *
      */
     ready: function() {
-      // listens for a focus from the inputs in px-datetime-entry
-      this.listen(this, 'px-focused-range-field', '_focusedRange');
       // listens for a button click, enter key, or esp key
-      this.listen(this, 'datetime-button-clicked', '_dateTimeButtons');
+      this.listen(this, 'px-datetime-button-clicked', '_dateTimeButtons');
       //listens for a change in the moment obj to visual indication if the entry has changed
       // TODO set a dev set attrb to enable or disable visual indication if changed
       // TODO set a dev set attrb to enable or disable visual indication if submitted && move it from hard coded in validate to an event like this
-      this.listen(this, 'moment-changed', '_addChangedClass');
-    },
-    /**
-     * Helper function for px-datetime-buttons.html class attribute
-     *
-     * Checks if the datetimeButtonsDisplayOption value is 'onfocus', if yes it adds visuallyhidden class.
-     *
-     * @param {String} datetimeButtonsDisplayOption: dev set option.
-     * @return {String} visuallyhidden class or ' '
-     */
-    _addHiddenClass: function(datetimeButtonsDisplayOption){
-      if(datetimeButtonsDisplayOption.toLowerCase() === 'onfocus'){
-        return 'visuallyhidden';
-      }
-      return '';
-    },
-    /**
-     * Helper function for dom-if:
-     *
-     * Checks if the datetimeButtonsDisplay value is 'hide' or 'hide-all', if yes it returns false.
-     *
-     * @param {String} datetimeButtonsDisplay: dev set option.
-     * @return {Boolean} to add the buttons or not
-     */
-    _showRangeFieldButtons: function(datetimeButtonsDisplay){
-      if (datetimeButtonsDisplay.toLowerCase() === 'hide' || datetimeButtonsDisplay.toLowerCase() === 'hide-all'){
-        return false;
-      }
-      return true;
-    },
-    /**
-     * Helper function setting attribute on px-datetime-buttons
-     *
-     * Checks if the datetimeButtonsDisplay value is 'hide-submit', if yes it passes true to px-datetime-buttons.
-     *
-     * @param {String} dateTimeButtonsDisplay: dev set option.
-     * @return {Boolean} to add the submit button or not
-     */
-    _hideSubmitButton: function(dateTimeButtonsDisplay){
-      if (dateTimeButtonsDisplay.toLowerCase() === 'hide-submit'){
-        return true;
-      }
-      return false;
-    },
-    /**
-     * Helper function setting attribute on px-datetime-buttons
-     *
-     * Checks if the datetimeButtonsDisplay value is 'hide-cancel', if yes it passes true to px-datetime-buttons.
-     *
-     * @param {String} dateTimeButtonsDisplay: dev set option.
-     * @return {Boolean} to add the cancel button or not
-     */
-    _hideCancelButton: function(dateTimeButtonsDisplay){
-      if (dateTimeButtonsDisplay.toLowerCase() === 'hide-cancel'){
-        return true;
-      }
-      return false;
-    },
-    /**
-     * Observer fuction
-     *
-     * Checks if all params are true then sets allFieldsValid to true
-     *
-     * @param {Boolean} vsd: validStartDate
-     * @param {Boolean} vst: validStartTime
-     * @param {Boolean} ved: validEndDate
-     * @param {Boolean} vet: validEndTime
-     */
-    _allFieldsValid: function (vsd, vst, ved, vet) {
-      this.set('allFieldsValid', (vsd && vst && ved && vet) );
-    },
-    /**
-     * Called in validate
-     *
-     * Turns validation classes on and off for 'fromFields' and 'toFields'
-     *
-     * @param {Boolean} isError
-     */
-    _toggleErrorClasses: function(isError) {
-      this.toggleClass('validation-error', isError, this.$$('#fromFields'));
-      this.toggleClass('validation-error', isError, this.$$('#toFields'));
-    },
-    /**
-     * Called in px-datetime-entry by '_handleFocus'
-     *
-     * Remove visuallyhidden class from dtBtns.
-     *
-     * Determine which field was changed and add validation-changed class to the changed field
-     *
-     * If autoSubmit is true and the entry is valid, call datetime-button-clicked
-     *
-     * @param {Event} evt: The data packet is a moment object
-     */
-    _addChangedClass: function(evt) {
-      // TODO: enable the moment change, but not applied
-      this.toggleClass('visuallyhidden', false, this.$$('#dtBtns'));
-
-      if(this.showChangedClass){
-        if(evt.detail.moment===this.toMoment){
-          this.toggleClass('validation-changed', true, this.$$('#toFields'));
-          this.toggleClass('is-focused', true, this.$$('#toFields'));
-        } else {
-          this.toggleClass('validation-changed', true, this.$$('#fromFields'));
-          this.toggleClass('is-focused', true, this.$$('#fromFields'));
-        }
-      }
-
-      if(this.autoSubmit){
-        setTimeout(function(){
-          if(this.isSubmitButtonValid){
-            this.fire('datetime-button-clicked',{action : true});
-          }
-        }.bind(this),10);
-      }
-      evt.stopPropagation();
-    },
-    /**
-     * Called by '_dateTimeButtons' event.
-     *
-     * Remove validation-changed class from both fields
-     *
-     * If datetimeButtonsDisplayOption is 'onfocus', hide the buttons
-     */
-    _removeChangedClass: function() {
-      this.toggleClass('validation-changed', false, this.$$('#toFields'));
-      this.toggleClass('validation-changed', false, this.$$('#fromFields'));
-      if(this.datetimeButtonsDisplayOption === 'onfocus'){
-        this.toggleClass('visuallyhidden', true, this.$$('#dtBtns'));
-      }
-    },
-    /**
-     * Called by '_dateTimeButtons' event after the range is set.
-     *
-     * Add 'validation-success' class to both fields.
-     *
-     * If datetimeButtonsDisplayOption is 'onfocus', hide the buttons
-     */
-    _toggleSuccessClasses: function() {
-      this.toggleClass('validation-success', true, this.$$('#fromFields'));
-      this.toggleClass('validation-success', true, this.$$('#toFields'));
-
-      setTimeout(function(){
-        this.toggleClass('validation-success', false, this.$$('#fromFields'));
-        this.toggleClass('validation-success', false, this.$$('#toFields'));
-      }.bind(this),800);
-    },
-    /**
-     * Return focus to the field which was last focused on.
-     */
-    returnLastFocus: function() {
-      this.lastFocusedElement.focus();
-    },
-    /**
-     * Called in px-datetime-entry by '_handleFocus'
-     *
-     * Determine if the 'fromFields' is the field in focus.
-     *
-     * Trigger '_toggleFocusToFrom' with the result.
-     *
-     * If 'clearInvalid' is yes, check to see if the entry is invalid. If so delete the entry.
-     *
-     * @param {Event} e event object
-     */
-    _focusedRange:function(e){
-      var normalizedEvent = Polymer.dom(e);
-
-      var toggleFocus = (normalizedEvent.path[1].getAttribute('id') === 'fromFields') ? true : false;
-      this._toggleFocusToFrom(toggleFocus);
-
-      this.lastFocusedElement = normalizedEvent.rootTarget;
-      if(this.clearInvalid === 'yes'){
-        var range = this.lastFocusedElement.getElementsByClassName("validation-error");
-          if (range.length) {
-            range[0].value = "";
-        }
-      }
-
-      e.stopPropagation();
-    },
-    /**
-     * Called by '_focusedRange'
-     *
-     * Determine which field need to turn 'is-focus' class on or off based on boolean
-     *
-     * @param {Boolean} isFromFocused
-     */
-    _toggleFocusToFrom: function(isFromFocused) {
-      this.toggleClass('is-focused', isFromFocused, this.$$('#fromFields'));
-      this.toggleClass('is-focused', !isFromFocused, this.$$('#toFields'));
     },
     /**
      * Event handler.
@@ -407,7 +197,6 @@ Px datetime component that displays and validates a date time range.
       this._removeChangedClass();
 
       if(normalizedEvent.event.detail.action){
-
         this.set('range', {
           from: this.fromMoment.toISOString(),
           to: this.toMoment.toISOString()
@@ -416,10 +205,55 @@ Px datetime component that displays and validates a date time range.
           this._toggleSuccessClasses();
         }
       } else {
-        // this.returnLastFocus(); //not convinced we need
         this._setRange();
       }
       e.stopPropagation();
+    },
+    /**
+     *
+     */
+    _getIsValid: function(_fromValid, _toValid, fromMoment, toMoment) {
+      if (!this._validateRangeOrder()) {
+        this.$.fromDate._forcedFailedClass = true;
+        this.$.toDate._forcedFailedClass = true;
+
+        return false;
+      }else{
+        this.$.fromDate._forcedFailedClass = false;
+        this.$.toDate._forcedFailedClass = false;
+      }
+
+      return _fromValid === true && _toValid === true;
+    },
+    /**
+     *
+     */
+    _getFieldClass: function (isValid) {
+      var classList = "";
+
+      if(!isValid) {
+        classList += "validation-failed ";
+      }
+
+      return classList;
+    },
+    /**
+     * Validation for the range. Makes sure the ranges are in chronological order
+     *
+     * @return {Boolean} passed range validation
+     */
+    _applyValidationStyle: function() {
+      // if the from date is before the to date, everything is ok
+      if(this.fromMoment.isBefore(this.toMoment)) {
+        this._toggleErrorClasses(false);
+        this._submitButtonState(this.allFieldsValid);
+        return true;
+      } else {
+        // toggle validation errors
+        this._toggleErrorClasses(true);
+        this._submitButtonState(false);
+        return false;
+      }
     }
 
   });

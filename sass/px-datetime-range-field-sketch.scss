@@ -48,17 +48,27 @@ $inuit-enable-validation-states : true;
   width: auto;
 }
 
-#fromFields,
-#toFields,
-.validation-error,
-.validation-warning,
-.validation-success{
-  transition: .2s;
+.validation-container {
+  cursor: pointer;
+  margin-left: auto;
 }
 
-.validation-changed{
-  border-color: $alert-yellow;
+.validation-container__icon {
+  width: calculateRem(13px);
+  height: calculateRem(13px);
+  vertical-align: text-top;
 }
+// #fromFields,
+// #toFields,
+// .validation-error,
+// .validation-warning,
+// .validation-success{
+//   transition: .2s;
+// }
+//
+// .validation-changed{
+//   border-color: $alert-yellow;
+// }
 
 // Trumps
 $inuit-enable-margins--tiny     : true;

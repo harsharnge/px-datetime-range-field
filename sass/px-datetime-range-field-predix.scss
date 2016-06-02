@@ -21,18 +21,6 @@ common/abstract rules go in px-datetime-range-field-sketch.scss, not in this fil
 
 @import 'px-datetime-range-field-sketch.scss';
 
-// Component
-span {
-  color: $gray6;
-}
-
-.is-focused {
-  border-color: $inuit-forms-border--outer--focused;
-  box-shadow: $inuit-forms-border--inner--focused;
-}
-
-.text-input{
-  &, & label {
-    color: $gray7;
-  }
+.validation-container__icon--failed {
+  color: $alert-red;
 }
