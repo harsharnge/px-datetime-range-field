@@ -36,7 +36,7 @@
     </iron-ajax>
 
     <div style="position: relative;">
-      <h3>Basic</h3>
+      <h3>Basic bind through demo-data</h3>
       <div>
         Basic Range is from <b>{{sampleData.range.from}}</b> to <b>{{sampleData.range.to}}</b>
       </div>
@@ -47,7 +47,11 @@
       </px-datetime-range-field>
       <br />
       <br />
-
+      <h3>Basic bind through document</h3>
+      <div>
+        Auto Update UTC Range is from <b>{{rangeAuto.from}}</b> to <b>{{rangeAuto.to}}</b>
+      </div>
+      <br />
       <px-datetime-range-field
         id="rangeA"
         range='{{rangeAuto}}'>
