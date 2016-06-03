@@ -227,7 +227,35 @@ Px datetime component that displays and validates a date time range.
         this._submitButtonState(false);
         return false;
       }
-    }
+    },
+    /**
+     * Event handler.
+     * Trigged when cancel, submit, esc, or enter are clicked
+     *
+     * Calls _removeChangedClass
+     *
+     * If action is true, set 'range' to 'toMoment' and 'fromMoment'.
+     * Calls _toggleSuccessClasses
+     *
+     * If action is false, reset the fields to last submitted dates.
+     *
+     * @param {Event} e event object
+     */
+    _dateTimeButtons:function(e){
+      var normalizedEvent = Polymer.dom(e);
+
+      if(normalizedEvent.event.detail.action){
+        this.set('range', {
+          from: this.fromMoment.toISOString(),
+          to: this.toMoment.toISOString()
+        });
+        if(this.showSuccessClass){
+        }
+      } else {
+        this._setRange();
+      }
+      e.stopPropagation();
+    },
 
   });
 </script>
