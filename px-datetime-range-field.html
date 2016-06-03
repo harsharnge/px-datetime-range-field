@@ -51,8 +51,9 @@ Px datetime component that displays and validates a date time range.
           block-future-dates="{{blockFutureDates}}">
         </px-datetime-field>
         <template is="dom-if" if="{{!isValid}}">
-          <div class="fa fa-fw validation-container">
-            <iron-icon class$="{{_getValidationIconClass(isValid)}}"
+          <div class="fa fa-fw validation-container u-ml--">
+            <iron-icon
+              class$="{{_getValidationIconClass(isValid)}}"
               icon="polymer-font-awesome:fa-warning">
             </iron-icon>
             <template is="dom-if" if="{{!isValid}}">
@@ -60,7 +61,7 @@ Px datetime component that displays and validates a date time range.
                 class="tooltip-font"
                 smart-orientation
                 orientation="top"
-                tooltip-message="{{validationErrorMessage}}">
+                tooltip-message="Range is reversed">
               </px-tooltip>
             </template>
           </div>
@@ -109,7 +110,7 @@ Px datetime component that displays and validates a date time range.
        */
       timeFormat: {
           type: String,
-          value: 'HH:mm:ss A'
+          value: 'HH:mm:ss'
       },
       /**
        *
@@ -176,40 +177,6 @@ Px datetime component that displays and validates a date time range.
     ready: function() {
       // listens for a button click, enter key, or esp key
       this.listen(this, 'px-datetime-button-clicked', '_dateTimeButtons');
-      //listens for a change in the moment obj to visual indication if the entry has changed
-      // TODO set a dev set attrb to enable or disable visual indication if changed
-      // TODO set a dev set attrb to enable or disable visual indication if submitted && move it from hard coded in validate to an event like this
-    },
-    /**
-     * Event handler.
-     * Trigged when cancel, submit, esc, or enter are clicked
-     *
-     * Calls _removeChangedClass
-     *
-     * If action is true, set 'range' to 'toMoment' and 'fromMoment'.
-     * Calls _toggleSuccessClasses
-     *
-     * If action is false, reset the fields to last submitted dates.
-     *
-     * @param {Event} e event object
-     */
-    _dateTimeButtons:function(e){
-      var normalizedEvent = Polymer.dom(e);
-
-      this._removeChangedClass();
-
-      if(normalizedEvent.event.detail.action){
-        this.set('range', {
-          from: this.fromMoment.toISOString(),
-          to: this.toMoment.toISOString()
-        });
-        if(this.showSuccessClass){
-          this._toggleSuccessClasses();
-        }
-      } else {
-        this._setRange();
-      }
-      e.stopPropagation();
     },
     /**
      *
@@ -229,15 +196,19 @@ Px datetime component that displays and validates a date time range.
     },
     /**
      *
+     *
+     *
      */
-    _getFieldClass: function (isValid) {
-      var classList = "";
+    _getValidationIconClass: function(isValid){
+      var classList= ['validation-container__icon'];
 
       if(!isValid) {
-        classList += "validation-failed ";
+        classList.push('validation-container__icon--failed');
       }
-
-      return classList;
+      else {
+          classList.push('visuallyhidden');
+      }
+      return classList.join(' ');
     },
     /**
      * Validation for the range. Makes sure the ranges are in chronological order
