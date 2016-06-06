@@ -58,17 +58,6 @@ $inuit-enable-validation-states : true;
   height: calculateRem(13px);
   vertical-align: text-top;
 }
-// #fromFields,
-// #toFields,
-// .validation-error,
-// .validation-warning,
-// .validation-success{
-//   transition: .2s;
-// }
-//
-// .validation-changed{
-//   border-color: $alert-yellow;
-// }
 
 // Trumps
 $inuit-enable-margins--tiny     : true;
