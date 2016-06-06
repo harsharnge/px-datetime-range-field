@@ -177,6 +177,14 @@ Px datetime component that displays and validates a date time range.
     ready: function() {
       // listens for a button click, enter key, or esp key
       this.listen(this, 'px-datetime-button-clicked', '_dateTimeButtons');
+      this.listen(this.$.fromDate, 'px-next-field', '_focusFirstToEntry');
+      this.listen(this.$.toDate, 'px-previous-field', '_focusLastFromEntry');
+    },
+    _focusFirstToEntry: function() {
+      this.$.toDate._focusFirstEntry();
+    },
+    _focusLastFromEntry: function() {
+      this.$.fromDate._focusLastEntry();
     },
     /**
      *
