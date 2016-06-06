@@ -146,10 +146,10 @@ Px datetime component that displays and validates a date time range.
        * time whetehr the time is valid, if showing both whether both are valids
        *
        */
-      // isValid: {
-      //   type: Boolean,
-      //   computed: '_getIsValid(_fromValid, _toValid, _isRangeValid)'
-      // },
+      isValid: {
+        type: Boolean,
+        computed: '_getIsValid(_fromValid, _toValid, _isRangeValid)'
+      },
       /**
        * used internally to determine if the validation error should be displayed
        *
@@ -189,19 +189,12 @@ Px datetime component that displays and validates a date time range.
     /**
      *
      */
-    // _getIsValid: function(_fromValid, _toValid, _isRangeValid) {
-    //   if (!this._validateRangeOrder()) {
-    //     this.$.fromDate._forcedFailedClass = true;
-    //     this.$.toDate._forcedFailedClass = true;
-    //
-    //     return false;
-    //   }else{
-    //     this.$.fromDate._forcedFailedClass = false;
-    //     this.$.toDate._forcedFailedClass = false;
-    //   }
-    //
-    //   return _fromValid === true && _toValid === true;
-    // },
+    _getIsValid: function(_fromValid, _toValid, _isRangeValid) {
+      if(_fromValid && _toValid && _isRangeValid){
+        return true;
+      }
+      return false;
+    },
     /**
      *
      */
@@ -209,13 +202,12 @@ Px datetime component that displays and validates a date time range.
       if (!this._validateRangeOrder()) {
         this.$.fromDate._forcedFailedClass = true;
         this.$.toDate._forcedFailedClass = true;
-
         return false;
       }else{
         this.$.fromDate._forcedFailedClass = false;
         this.$.toDate._forcedFailedClass = false;
+        return true;
       }
-
     },
     /**
      *
