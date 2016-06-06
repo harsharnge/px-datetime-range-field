@@ -50,13 +50,13 @@ Px datetime component that displays and validates a date time range.
           is-valid="{{_toValid}}"
           block-future-dates="{{blockFutureDates}}">
         </px-datetime-field>
-        <template is="dom-if" if="{{!isValid}}">
+        <template is="dom-if" if="{{!_isRangeValid}}">
           <div class="fa fa-fw validation-container u-ml--">
             <iron-icon
-              class$="{{_getValidationIconClass(isValid)}}"
+              class$="{{_getValidationIconClass(_isRangeValid)}}"
               icon="polymer-font-awesome:fa-warning">
             </iron-icon>
-            <template is="dom-if" if="{{!isValid}}">
+            <template is="dom-if" if="{{!_isRangeValid}}">
               <px-tooltip
                 class="tooltip-font"
                 smart-orientation
@@ -146,17 +146,17 @@ Px datetime component that displays and validates a date time range.
        * time whetehr the time is valid, if showing both whether both are valids
        *
        */
-      isValid: {
-        type: Boolean,
-        computed: '_getIsValid(_fromValid, _toValid, _isRangeValid)'
-      },
+      // isValid: {
+      //   type: Boolean,
+      //   computed: '_getIsValid(_fromValid, _toValid, _isRangeValid)'
+      // },
       /**
        * used internally to determine if the validation error should be displayed
        *
        */
       _isRangeValid: {
         type: Boolean,
-        computed: '_getIsValid( fromMoment, toMoment)'
+        computed: '_getIsRangeValid( fromMoment, toMoment)'
       },
       /**
        *
@@ -189,7 +189,23 @@ Px datetime component that displays and validates a date time range.
     /**
      *
      */
-    _getIsValid: function(_fromValid, _toValid, fromMoment, toMoment) {
+    // _getIsValid: function(_fromValid, _toValid, _isRangeValid) {
+    //   if (!this._validateRangeOrder()) {
+    //     this.$.fromDate._forcedFailedClass = true;
+    //     this.$.toDate._forcedFailedClass = true;
+    //
+    //     return false;
+    //   }else{
+    //     this.$.fromDate._forcedFailedClass = false;
+    //     this.$.toDate._forcedFailedClass = false;
+    //   }
+    //
+    //   return _fromValid === true && _toValid === true;
+    // },
+    /**
+     *
+     */
+    _getIsRangeValid: function(fromMoment, toMoment) {
       if (!this._validateRangeOrder()) {
         this.$.fromDate._forcedFailedClass = true;
         this.$.toDate._forcedFailedClass = true;
@@ -200,17 +216,16 @@ Px datetime component that displays and validates a date time range.
         this.$.toDate._forcedFailedClass = false;
       }
 
-      return _fromValid === true && _toValid === true;
     },
     /**
      *
      *
      *
      */
-    _getValidationIconClass: function(isValid){
+    _getValidationIconClass: function(_isRangeValid){
       var classList= ['validation-container__icon'];
 
-      if(!isValid) {
+      if(!_isRangeValid) {
         classList.push('validation-container__icon--failed');
       }
       else {
