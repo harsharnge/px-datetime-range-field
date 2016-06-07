@@ -173,10 +173,6 @@ Px datetime component that displays and validates a date time range.
       }
     },
 
-    observers: [
-      // '_validateRangeAndBroadcastChanges(fromMoment, toMoment, isValid)'
-    ],
-
     /**
      * Sets up listeners for a variety of events fired from or passing through this component
      *
@@ -187,9 +183,15 @@ Px datetime component that displays and validates a date time range.
       this.listen(this.$.fromDate, 'px-next-field', '_focusFirstToEntry');
       this.listen(this.$.toDate, 'px-previous-field', '_focusLastFromEntry');
     },
+    /*
+     *
+     */
     _focusFirstToEntry: function() {
       this.$.toDate._focusFirstEntry();
     },
+    /*
+     *
+     */
     _focusLastFromEntry: function() {
       this.$.fromDate._focusLastEntry();
     },
@@ -217,8 +219,7 @@ Px datetime component that displays and validates a date time range.
       }
     },
     /**
-     *
-     *
+     * helper function to decide which classes need to be plied to iron-icon element
      *
      */
     _getValidationIconClass: function(_isRangeValid){
