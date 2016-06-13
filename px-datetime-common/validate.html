@@ -14,8 +14,6 @@ var validate = {
     /**
      * Boolean stating if the current component is valid. Gets updated in '_validateInput'
      *
-     * @default true
-     *
      * @private
     */
     isValid:{
@@ -36,8 +34,15 @@ var validate = {
     neighborValid:{
       type:Boolean,
       value:true
+    },
+    /**
+     * String used to describe the current invalid state
+     *
+    */
+    validationErrorMessage:{
+      type: String,
+      value: 'invalid'
     }
-
   },
   /**
    * Validation function for 'px-datetime-entry' and 'px-time-input'
@@ -45,21 +50,39 @@ var validate = {
    * @return {Boolean} passed validation
    */
   _validateInput: function() {
-    this.parentNode.classList.remove('is-focused');
-    // if the component datetime string is a valid datetime
-    if (moment(this.dateTimeWorkingCopy, this.momentFormat, true).isValid()) {
-      // turn off input box error outline
-      this.toggleClass('validation-error', false, this.$$('input'));
+    console.log('validate _input');
 
+    var inputStr = '',
+        inputArr = Polymer.dom(this.root).querySelectorAll('.cell');
+
+    //Create a string from all of the fields put together
+    for (var i = 0; i < inputArr.length; i++) {
+      if(inputArr[i].momentFormat !== "Z"){
+        inputStr = inputStr + inputArr[i].dtWorkingCopy + inputArr[i].symbol;
+      }
+    }
+
+    inputStr = inputStr.trim();
+
+    //added to be able to use Moment strict parsing
+    inputStr = inputStr.split('\xa0').join(' ');
+    var inputMoment = moment.tz(inputStr, this.momentFormat, this.timeZone),
+        notAllowedInFuture = this.blockFutureDates && inputMoment.isAfter(moment.tz(moment(), this.timezone), 'day');
+
+    // if the component datetime string is a valid datetime
+    if(inputMoment.isValid() &&
+       !notAllowedInFuture) {
+      // turn off input box error outline
+      this.toggleClass('validation-error', false, this.$.wrapper);
       /*
         The input box only has date or time.
         Clone the moment object so we have a full date-time.
 
         We want to use clone so it stays in utc or local time
       */
-      var newMoment = this.moment.clone();
+      var newMoment = this.momentObj.clone();
       // just use the relevant fields, so ok if not in utc timemoment
-      var typedInMoment = moment(this.dateTimeWorkingCopy, this.momentFormat);
+      var typedInMoment = moment.tz(inputStr, this.momentFormat, this.timeZone);
 
       // since the input box only has date or time, just reset that portion of the moment object
       if (this.dateOrTime.toLowerCase() === 'date') { // if i'm typing in a date field, set the new date
@@ -67,35 +90,65 @@ var validate = {
         newMoment.year(typedInMoment.year()); // set the year
         newMoment.month(typedInMoment.month()); // then the month
         newMoment.date(typedInMoment.date()); // and finally the date, to make sure we don't have any rolling effects
-      }
-      else {
+      } else {
         newMoment.hour(typedInMoment.hour());
         newMoment.minute(typedInMoment.minute());
         newMoment.second(typedInMoment.second());
+        newMoment.millisecond(typedInMoment.millisecond());
       }
 
       this.set('isValid', true);
       // if the neighbor is also valid, then we can set our moment object
-      if(this.neighborValid && !this.moment.isSame(newMoment,'second')) {
-        this.set('moment', newMoment);
-        this.fire('moment-changed',{'moment':newMoment})
+      if(this.neighborValid && !this.momentObj.isSame(newMoment)) {
+        this.set('momentObj', newMoment);
+        this.fire('px-moment-changed',{'momentObj':newMoment})
       }
       return true;
 
-    } else { //the input box string is not a valid date/time
-      // sets placeholder text when necessary
-      if (this.momentFormat === "MM/DD/YYYY") {
-        this.$$('input').placeholder = this.momentFormat;
-      } else {
-        this.$$('input').placeholder = "HH:MM:SS ?M";
+    } else {
+      //the input box string is not a valid date/time
+      if(notAllowedInFuture) {
+        this.set('validationErrorMessage', 'Future dates are not allowed');
+      }else {
+        var invalidAt = inputMoment.invalidAt();
+
+        if(invalidAt !== -1) {
+          switch(invalidAt) {
+            case 0:
+              this.set('validationErrorMessage', 'Year ' + inputMoment._a[invalidAt] + ' is not valid');
+              break;
+            case 1:
+              this.set('validationErrorMessage', 'Month ' + (inputMoment._a[invalidAt] + 1) + ' is not valid');
+              break;
+            case 2:
+              this.set('validationErrorMessage', 'Day ' + inputMoment._a[invalidAt] + ' is not valid');
+              break;
+            case 3:
+              this.set('validationErrorMessage', 'Hour ' + inputMoment._a[invalidAt] + ' is not valid');
+              break;
+            case 4:
+              this.set('validationErrorMessage', 'Minute ' + inputMoment._a[invalidAt]  + ' is not valid');
+              break;
+            case 5:
+              this.set('validationErrorMessage', 'Second ' + inputMoment._a[invalidAt] + ' is not valid');
+              break;
+            case 6:
+              this.set('validationErrorMessage', 'Millisecond ' + inputMoment._a[invalidAt] + ' is not valid');
+              break;
+          }
+        } else if(inputMoment.parsingFlags().bigHour === true) {
+          this.set('validationErrorMessage', 'This hour is not within a 12 hour clock');
+        }
       }
-      // turn on the error outline
-      this.toggleClass('validation-error', true, this.$$('input'));
+
+
+      this.toggleClass('validation-error', true, this.$.wrapper);
       this.set('isValid', false);
       this._submitButtonState(false);
 
       return false;
     }
+
   },
   /**
    * Sets the button state based on if validation has been passed or not. This in turn enables or disables the Submit button.
@@ -104,25 +157,6 @@ var validate = {
    */
   _submitButtonState: function(state) {
       this.set('isSubmitButtonValid', state);
-  },
-  /**
-   * Validation for the range. Makes sure the ranges are in chronological order
-   *
-   * @return {Boolean} passed range validation
-   */
-  _validateRangeAndBroadcastChanges: function() {
-    // if the from date is before the to date, everything is ok
-    if(this.fromMoment.isBefore(this.toMoment)) {
-      this._toggleErrorClasses(false);
-      this._submitButtonState(this.allFieldsValid);
-      return true;
-
-    } else {
-      // toggle validation errors
-      this._toggleErrorClasses(true);
-      this._submitButtonState(false);
-      return false;
-    }
   }
 };
 

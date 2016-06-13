@@ -444,6 +444,11 @@ a {
   display: -ms-flexbox;
   display: flex; }
 
+.inline--flex {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex; }
+
 .flex--row {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
@@ -759,12 +764,6 @@ textarea {
   color: #7c7c84; }
 
 /**
-   * Text inputs with no styles.
-   */
-.text-input--bare {
-  border: 0 !important; }
-
-/**
    * Styles for validation states
    */
 .validation-warning {
@@ -835,23 +834,58 @@ button.btn {
 .btn + .btn {
   margin-left: 0.6666666667rem; }
 
-.text-input {
-  width: auto; }
+.range-field__field {
+  cursor: pointer; }
+  .range-field__field label {
+    margin: 0; }
 
-.text-input--bare {
-  margin: 0;
-  padding: 0; }
-  .text-input--bare:focus {
-    outline: 0; }
+/*
+when the text is non editable the cursor is the default black arrow
+*/
+.text-input--non-editable {
+  cursor: default; }
 
-.range-field__field .text-input--bare {
-  font-size: 1rem;
-  line-height: 1.3333333333;
-  width: 6rem;
-  font-family: var(--px-font-family); }
+/*
+adjusts size and position of the Calendar and Clock icon
+*/
+.dtIcon {
+  -webkit-transform: scale(0.7, 0.7) translate(0, 0);
+          transform: scale(0.7, 0.7) translate(0, 0);
+  margin: -1px 0px; }
 
-.range-field__field label {
-  margin: 0; }
+.timezone__dropdown {
+  width: 10rem; }
+
+.wrapper {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.validation-container {
+  cursor: pointer;
+  margin-left: auto; }
+
+.validation-container__icon {
+  width: 0.8666666667rem;
+  height: 0.8666666667rem;
+  vertical-align: text-top; }
+
+.cell {
+  display: inline-block;
+  font-size: var(--px-datetime-entry-font-size, inherit);
+  margin-bottom: -1px; }
+
+.-text-align-adjustment {
+  margin-top: 0px; }
+
+.dt-label-icon {
+  margin: -3px 3px -3px 0px; }
+
+.align-dropdown {
+  margin: -1px 0px; }
 
 /**
  * Margin and padding helper classes. Use these to tweak layout on a micro
@@ -914,26 +948,33 @@ button.btn {
 /**
      * Add large margins.
      */
-.u-m\00002b {
+.u-m\00002b
+{
   margin: 1.3333333333rem !important; }
 
-.u-mt\00002b {
+.u-mt\00002b
+{
   margin-top: 1.3333333333rem !important; }
 
-.u-mr\00002b {
+.u-mr\00002b
+{
   margin-right: 1.3333333333rem !important; }
 
-.u-mb\00002b {
+.u-mb\00002b
+{
   margin-bottom: 1.3333333333rem !important; }
 
-.u-ml\00002b {
+.u-ml\00002b
+{
   margin-left: 1.3333333333rem !important; }
 
-.u-mh\00002b {
+.u-mh\00002b
+{
   margin-right: 1.3333333333rem !important;
   margin-left: 1.3333333333rem !important; }
 
-.u-mv\00002b {
+.u-mv\00002b
+{
   margin-top: 1.3333333333rem !important;
   margin-bottom: 1.3333333333rem !important; }
 
@@ -963,17 +1004,27 @@ button.btn {
   margin-top: 0 !important;
   margin-bottom: 0 !important; }
 
-span {
-  color: #9999a3; }
+:host {
+  --dropdown_bg_default: transparent;
+  --dropdown_bg_hover: transparent;
+  --dropdown_bg_opened: transparent;
+  --dropdown_border_color: 0;
+  --dropdown_text_padding: 0;
+  --dropdown_text_color--hover: #0a9ec1;
+  --dropdown_text_color--pressed: #086e87;
+  --dropdown_text--opened: #0a9ec1;
+  font-size: var(--px-datetime-entry-font-size, inherit); }
 
-.is-focused {
-  border-color: #0a9ec1;
-  box-shadow: inset 0 0 0 1px #d1d0d8; }
+.validation-container__icon--failed {
+  color: #e53838; }
+
+.dtLabel {
+  color: #9999a3; }
 
 .text-input, .text-input label,
 .dtIcon,
 .dtIcon label {
   color: #7c7c84; }
 
-.text-input--bare {
-  background: transparent; }
+.text-input--non-editable {
+  color: #b1b1bc; }

@@ -1,14 +1,14 @@
 {
-    "name": "px-calendar",
+    "name": "px-calendar-picker",
     "author": "General Electric",
-    "description": "A Px component",
-    "version": "0.0.1",
+    "description": "A Px component allowing to pick a date from a calendar",
+    "version": "0.1.6",
     "private": true,
     "extName" : null,
     "repository" :
     {
         "type": "git",
-        "url": "https://github.com/PredixDev/change-this-in-package.json-please.git"
+        "url": "https://github.com/PredixDev/px-calendar-picker.git"
     },
     "homepage": "http://predix.io/",
     "devDependencies": {

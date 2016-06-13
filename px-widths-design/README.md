@@ -1,12 +1,10 @@
-# Widths
+# Widths design
 
-The Predix Experience Widths module is a series of width helper classes that you can use to size things like grid systems.
-
-
+The Predix UI Widths module is a series of width helper classes that you can use to size things like grid systems.
 
 ## Dependencies
 
-Px's Widths module depends on two other Px modules:
+Predix UI's Widths module depends on two other Px modules:
 
 * [px-functions-design](https://github.com/PredixDev/px-functions-design)
 * [px-widths-tools-design](https://github.com/PredixDev/px-widths-tools-design)
@@ -15,9 +13,9 @@ Px's Widths module depends on two other Px modules:
 
 Install using Bower:
 
-    bower install --save https://github.com/PredixDev/px-widths-design.git
+    bower install --save px-widths-design
 
-Once installed, `@import` into your project's Sass file in its Trumps layer:
+Once installed, `@import` into your project's Sass file in its **Trumps** layer:
 
     @import "px-widths-design/_trumps.widths.scss";
 
@@ -55,3 +53,5 @@ Sixths:
 * `u-3/6|u-3-of-6`
 * `u-4/6|u-4-of-6`
 * `u-5/6|u-5-of-6`
+
+view the full API [here](http://predixdev.github.io/px-widths-design/sassdoc/)

@@ -1,8 +1,8 @@
 {
     "name": "px-datetime-range-field",
     "author": "General Electric",
-    "description": "A Px component",
-    "version": "0.0.1",
+    "description": "px-datetime-range-field",
+    "version": "0.1.5",
     "private": true,
     "extName" : null,
     "repository" :

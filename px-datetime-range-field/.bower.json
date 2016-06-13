@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-range-field",
-  "version": "0.0.1",
+  "version": "0.1.6",
   "main": [
     "px-datetime-range-field.html"
   ],
@@ -11,28 +11,31 @@
     "sass",
     "bower_components",
     "node_modules",
-    "test"
+    "test",
+    "OSS_Notice.pdf"
   ],
   "dependencies": {
-    "moment": "~2.10.6",
-    "polymer": "~1.2.3",
-    "px-theme": "https://github.com/PredixDev/px-theme.git#~0.4.0",
-    "px-datetime-common": "https://github.com/PredixDev/px-datetime-common.git"
+    "moment": "#~2.10.6",
+    "polymer": "#^1.5.0",
+    "px-theme": "#~0.7.0",
+    "px-datetime-common": "~0.3.0",
+    "px-datetime-field": "~0.2.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
-    "px-starter-kit-design": "https://github.com/PredixDev/px-starter-kit-design.git#~0.4.9",
-    "px-forms-design": "https://github.com/PredixDev/px-forms-design.git#~0.3.0",
-    "px-tables-design": "https://github.com/PredixDev/px-tables-design.git#~0.3.0"
+    "px-starter-kit-design": "#~0.5.4",
+    "px-forms-design": "#~0.3.15",
+    "px-tables-design": "#~0.3.12"
   },
-  "homepage": "https://github.com/predixdev/px-datetime-range-field",
-  "_release": "0.0.1",
+  "homepage": "https://github.com/predixDev/px-datetime-range-field",
+  "_release": "0.1.6",
   "_resolution": {
     "type": "version",
-    "tag": "v0.0.1",
-    "commit": "c9a89544be2996688d1257f95d1fb6f246c3e418"
+    "tag": "v0.1.6",
+    "commit": "738240c2e2bbcce8fbe38438c327b7ee6e30d452"
   },
-  "_source": "https://github.com/predixdev/px-datetime-range-field.git",
-  "_target": "0.0.1",
-  "_originalSource": "https://github.com/predixdev/px-datetime-range-field.git"
+  "_source": "https://github.com/predixDev/px-datetime-range-field.git",
+  "_target": "^0.1.6",
+  "_originalSource": "px-datetime-range-field",
+  "_direct": true
 }
