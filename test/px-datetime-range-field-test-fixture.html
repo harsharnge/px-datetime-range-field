@@ -19,66 +19,8 @@
   <body>
     <h3>Web Component Test : Fixture for px-datetime-range-field</h3>
     <px-datetime-range-field
-      id="basic"
-      display-options='{
-    "submitButtonText": "Click Here",
-    "submitButtonIcon": "fa fa-hand-pointer-o"
-  }'
-      show-changed-class
-      show-success-class>
+      id="range">
     </px-datetime-range-field>
-
-    <px-datetime-range-field
-      id="range"
-      range='{"from":"2014-10-11T20:00:00Z", "to":"2014-10-25T22:00:00Z"}'
-      show-changed-class
-      show-success-class>
-    </px-datetime-range-field>
-
-    <!-- buttonsDisplay attr -->
-    <px-datetime-range-field
-      id="buttonsDisplayHideSubmit"
-      datetime-buttons-display="hide-submit"
-      show-changed-class
-      show-success-class
-    ></px-datetime-range-field>
-    <px-datetime-range-field
-      id="buttonsDisplayHideCancel"
-      datetime-buttons-display="hide-cancel"
-      show-changed-class
-      show-success-class
-    ></px-datetime-range-field>
-    <px-datetime-range-field
-      id="buttonsDisplayHideAll"
-      datetime-buttons-display="hide-all"
-      show-changed-class
-      show-success-class
-    ></px-datetime-range-field>
-
-    <!-- datetimeButtonsDisplayOption attr -->
-    <px-datetime-range-field
-      id="datetimeButtonsDisplayOptionOnfocus"
-      datetime-buttons-display-option="onfocus"
-      show-changed-class
-      show-success-class
-    ></px-datetime-range-field>
-
-    <!-- autoSubmit attr -->
-    <px-datetime-range-field
-      id="autoSubmit"
-      range='{"from":"2014-10-11T23:00:00Z", "to":"2014-10-25T22:00:00Z"}'
-      auto-submit
-      show-changed-class
-      show-success-class
-    ></px-datetime-range-field>
-
-    <px-datetime-range-field
-      id="hasUtc"
-      range='{"from":"2014-11-11T23:00:00Z", "to":"2014-12-25T22:00:00Z"}'
-      is-utc
-      show-changed-class
-      show-success-class
-    ></px-datetime-range-field>
 
   </body>
 </html>

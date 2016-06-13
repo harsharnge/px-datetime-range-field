@@ -1,541 +1,329 @@
-
-function runBaseTests() {
-  suite('Polymer exists', function() {
-
-    test('Polymer exists', function() {
-      assert.isTrue(Polymer !== null);
-    });
-  });
-}
-
+// This is the wrapper for custom tests, called upon web components ready state
 function runCustomTests() {
-  var now = moment.utc(),
-      weekAgo = now.subtract(7,'days');
+  // Place any setup steps like variable declaration and initialization here
 
-  runBasicTests(now,weekAgo);
-  runRangeTests();
-  runButtonsTests();
-  runAutoSubmitTests();
-  runUtc();
-};
-
-function runBasicTests(now, weekAgo){
-  var basic = document.getElementById('basic');
-
-  suite('Test basic instantiation', function() {
-    var fromDate = Polymer.dom(basic.root).querySelector('#fromDate'),
-        fromTime = Polymer.dom(basic.root).querySelector('#fromTime'),
-        toDate = Polymer.dom(basic.root).querySelector('#toDate'),
-        toTime = Polymer.dom(basic.root).querySelector('#toTime');
-        submitButton = basic.querySelector('#submitButton');
-        buttonIcon = basic.querySelector('#submitButton').children;
-
-
-    checkIfElemExists(basic,'basic');
-
-    suite('check that entries were created', function() {
-      test('fromDate',function(){
-        assert.isTrue( fromDate !== null);
-      });
-      test('check that entries were created',function(){
-        assert.isTrue( fromTime !== null);
-      });
-      test('check that entries were created',function(){
-        assert.isTrue( toDate !== null);
-      });
-      test('check that entries were created',function(){
-        assert.isTrue( toTime !== null);
-      });
-    });
-
-    suite('check basic attributes', function() {
-      test('clearInvalid',function(){
-        assert.equal(basic.clearInvalid, 'yes');
-      });
-      test('datetimeButtonsDisplay',function(){
-        assert.equal(basic.datetimeButtonsDisplay, 'show-all');
-      });
-      test('datetimeButtonsDisplayOption',function(){
-        assert.equal(basic.datetimeButtonsDisplayOption, 'show');
-      });
-      test('autoSubmit',function(){
-        assert.isFalse(basic.autoSubmit);
-      });
-      test('displayoptions',function(){
-      assert.equal(basic.displayOptions.submitButtonText,"Click Here");
-      assert.equal(basic.displayOptions.submitButtonIcon,"fa fa-hand-pointer-o");
-      });
-      test('submit button has icon',function(){
-	  assert.isTrue(buttonIcon.length>0);
-	  assert.equal(buttonIcon[0].tagName,"I");
-	  assert.equal(buttonIcon[0].classList[0],'fa');
-	  assert.equal(buttonIcon[0].classList[1],'fa-hand-pointer-o');
-
-      
-      });
-      test('submit button text is click here',function(){
-     
-      assert.equal(submitButton.textContent.replace(/(\r\n|\n|\r)/gm,"").trim(),'Click Here');
-
-      });
-    });
-
-    suite('check the buttons', function() {
-      var buttons = Polymer.dom(basic.root).querySelector('#dtBtns');
-
-      test('appeared',function(){
-        assert.isTrue( buttons !== null);
-      });
-      test('not hideSubmit',function(){
-        assert.isFalse(buttons.hideSubmit);
-      });
-      test('not hideCancel',function(){
-        assert.isFalse(buttons.hideCancel);
-      });
-      test('buttons visible',function(){
-        assert.isFalse(buttons.classList.contains('visuallyhidden'));
-      });
-    });
-
-    suite('check time instantiated to default', function() {
-      var fromRange = moment(basic.range.from),
-          toRange = moment(basic.range.to);
-
-      var toDiff = now.diff(toRange),
-          fromDiff = weekAgo.diff(fromRange);
-
-      test('toField',function(){
-        // since some time has passed since the field was instantiated, we give ourselves a 10 sec buffer
-        assert.isTrue(toDiff < 1000);
-      });
-      test('fromField',function(){
-        // since some time has passed since the field was instantiated, we give ourselves a 10 sec buffer
-        assert.isTrue(fromDiff < 1000);
-      });
-    });
-
-    suite('check that entries were instantiated', function() {
-      var fromRange = moment(basic.range.from),
-          toRange = moment(basic.range.to);
-
-      test('fromDate',function(){
-        assert.equal(fromDate.moment._i,fromRange._i);
-      });
-      test('fromTime',function(){
-        assert.equal(fromTime.moment._i,fromRange._i);
-      });
-      test('toDate',function(){
-        assert.equal(toDate.moment._i,toRange._i);
-      });
-      test('toTime',function(){
-        assert.equal(toTime.moment._i,toRange._i);
-      });
-    });
-  });
-
-  suite('Test Applying a new datetime', function() {
-    updateDate(basic,'fromDate','05/04/2013','MM/DD/YYYY','from', 'Test Applying a new datetime');
-    applyDate(basic,'fromDate','from');
-
-    updateDate(basic,'fromTime','12:00:00 PM','hh:mm:ss A','from', 'Test Applying a new datetime');
-    applyDate(basic,'fromTime','from');
-
-    updateDate(basic,'toDate','09/14/2014','MM/DD/YYYY','to', 'Test Applying a new datetime');
-    applyDate(basic,'toDate','to');
-
-    updateDate(basic,'toTime','12:00:00 PM','hh:mm:ss A','to', 'Test Applying a new datetime');
-    applyDate(basic,'toTime','to');
-
-    suite('Wait until success class clears', function() {
-      test('cleared',function(done){
-        var assertions = function(){
-          done();
-        }
-        setTimeout(assertions,1000);
-      });
-    });
-  });
-
-  suite('Test Canceling a new datetime', function() {
-    updateDate(basic,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Canceling a new datetime');
-    cancelDate(basic,'fromDate','from');
-
-    updateDate(basic,'fromTime','01:00:00 PM','hh:mm:ss A','from','Test Canceling a new datetime');
-    cancelDate(basic,'fromTime','from');
-
-    updateDate(basic,'toDate','10/14/2014','MM/DD/YYYY','to','Test Canceling a new datetime');
-    cancelDate(basic,'toDate','to');
-
-    updateDate(basic,'toTime','01:00:00 PM','hh:mm:ss A','to','Test Canceling a new datetime');
-    cancelDate(basic,'toTime','to');
-  });
-
-  suite('Test Canceling a new datetime', function() {
-    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test Canceling a new datetime');
-    invalidDate(basic,'fromDate','from');
-
-    updateDate(basic,'toDate','10/14/2012','MM/DD/YYYY','to','Test Canceling a new datetime');
-    invalidDate(basic,'toDate','to');
-  });
-
-  suite('Test keyboard events', function() {
-    updateDate(basic,'fromDate','05/04/2016','MM/DD/YYYY','from','Test keyboard events');
-    invalidDate(basic,'fromDate','from');
-    escDate(basic,'fromDate','from');
-
-    updateDate(basic,'fromDate','05/04/2010','MM/DD/YYYY','from','Test keyboard events');
-    enterDate(basic,'fromDate','from');
-
-    suite('Wait until success class clears', function() {
-      test('cleared',function(done){
-        var assertions = function(){
-          done();
-        }
-        setTimeout(assertions,1000);
-      });
-    });
-  });
-
-  suite('Test onfocus styles',function(){
-    var fromFields = Polymer.dom(basic.root).querySelector('#fromFields'),
-        toFields = Polymer.dom(basic.root).querySelector('#toFields');
-
-    var fromDate = Polymer.dom(basic.root).querySelector('#fromDate'),
-        fromTime = Polymer.dom(basic.root).querySelector('#fromTime'),
-        toDate = Polymer.dom(basic.root).querySelector('#toDate'),
-        toTime = Polymer.dom(basic.root).querySelector('#toTime');
-    var fromDateInput = Polymer.dom(fromDate.root).querySelector('#dtImport'),
-        fromTimeInput = Polymer.dom(fromTime.root).querySelector('#dtImport'),
-        toDateInput = Polymer.dom(toDate.root).querySelector('#dtImport'),
-        toTimeInput = Polymer.dom(toTime.root).querySelector('#dtImport');
-
-    test('state appiled to fromFields',function(){
-      var evt = new CustomEvent('focus');
-      fromDateInput.dispatchEvent(evt);
-      assert.isTrue(fromFields.classList.contains('is-focused'));
-    });
-    test('state not appiled to toFields',function(){
-      assert.isFalse(toFields.classList.contains('is-focused'));
-    });
-    test('focus moves to fromTime; fromFields state remains',function(){
-      var evt = new CustomEvent('focus');
-      fromTimeInput.dispatchEvent(evt);
-      assert.isTrue(fromFields.classList.contains('is-focused'));
-    });
-    test('toFields focus remains',function(){
-      assert.isFalse(toFields.classList.contains('is-focused'));
-    });
-    test('focus moves to toDate; toFields gets state',function(){
-      var evt = new CustomEvent('focus');
-      toDateInput.dispatchEvent(evt);
-      assert.isTrue(toFields.classList.contains('is-focused'));
-    });
-    test('fromFields looses class',function(){
-      assert.isFalse(fromFields.classList.contains('is-focused'));
-    });
-    test('focus moves to toTime; toFields keeps class',function(){
-      var evt = new CustomEvent('focus');
-      toDateInput.dispatchEvent(evt);
-      assert.isTrue(toFields.classList.contains('is-focused'));
-    });
-    test('fromFields doesnt change',function(){
-      assert.isFalse(fromFields.classList.contains('is-focused'));
-    });
-  });
-} //runBasicTests
-
-function runRangeTests(){
   var range = document.getElementById('range');
 
-  checkIfElemExists(range,'range');
+  // This is the placeholder suite to place custom tests in
+  // Use testCase(options) for a more convenient setup of the test cases
+  suite('Navigation', function() {
 
-  suite('Range instantiated correctly',function(){
-    test('range.from is correct',function(){
-      assert.equal(range.range.from, "2014-10-11T20:00:00Z");
-    });
-    test('range.to is correct',function(){
-      assert.equal(range.range.to, "2014-10-25T22:00:00Z");
-    });
-    test('fromDate moment is correct',function(){
-      var elem = Polymer.dom(range.root).querySelector('#fromDate');
-      assert.equal(elem.moment.toISOString(), "2014-10-11T20:00:00.000Z");
-    });
-    test('fromTime moment is correct',function(){
-      var elem = Polymer.dom(range.root).querySelector('#fromTime');
-      assert.equal(elem.moment.toISOString(), "2014-10-11T20:00:00.000Z");
-    });
-    test('toDate moment is correct',function(){
-      var elem = Polymer.dom(range.root).querySelector('#toDate');
-      assert.equal(elem.moment.toISOString(), "2014-10-25T22:00:00.000Z");
-    });
-    test('toTime moment is correct',function(){
-      var elem = Polymer.dom(range.root).querySelector('#toTime');
-      assert.equal(elem.moment.toISOString(), "2014-10-25T22:00:00.000Z");
-    });
-  });
-}
+    test('navigation from from to to', function(done) {
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          fromEntries = Polymer.dom(fields[0].root).querySelectorAll('px-datetime-entry'),
+          fromTimeCells = Polymer.dom(fromEntries[1].root).querySelectorAll('px-datetime-entry-cell');
+      var spy = sinon.spy(range, '_focusFirstToEntry');
 
-function runButtonsTests(){
-  var buttonsDisplayHideSubmit = document.getElementById('buttonsDisplayHideSubmit'),
-      buttonsDisplayHideCancel = document.getElementById('buttonsDisplayHideCancel'),
-      buttonsDisplayHideAll = document.getElementById('buttonsDisplayHideAll'),
-      datetimeButtonsDisplayOptionOnfocus = document.getElementById('datetimeButtonsDisplayOptionOnfocus');
+      fireKeyboardEvent(fromTimeCells[fromTimeCells.length - 1], 'ArrowRight');
 
-  checkIfElemExists(buttonsDisplayHideSubmit,'buttonsDisplayHideSubmit');
-  checkIfElemExists(buttonsDisplayHideCancel,'buttonsDisplayHideCancel');
-  checkIfElemExists(buttonsDisplayHideAll,'buttonsDisplayHideAll');
-  checkIfElemExists(datetimeButtonsDisplayOptionOnfocus,'datetimeButtonsDisplayOptionOnfocus');
+      setTimeout(function() {
+        assert.isTrue(spy.called);
 
-
-  suite('hide-submit works', function() {
-    var buttons = Polymer.dom(buttonsDisplayHideSubmit.root).querySelector('#dtBtns');
-    test('buttons visible',function(){
-      assert.isFalse(buttons.classList.contains('visuallyhidden'));
-    });
-    test('not hideSubmit',function(){
-      assert.isTrue(buttons.hideSubmit);
-    });
-  });
-
-  suite('hide-cancel works', function() {
-    var buttons = Polymer.dom(buttonsDisplayHideCancel.root).querySelector('#dtBtns');
-    test('buttons visible',function(){
-      assert.isFalse(buttons.classList.contains('visuallyhidden'));
-    });
-    test('not hideCancel',function(){
-      assert.isTrue(buttons.hideCancel);
-    });
-  });
-
-  suite('hide-all works', function() {
-    var buttons = Polymer.dom(buttonsDisplayHideAll.root).querySelector('#dtBtns');
-    test('buttons not created', function() {
-      assert.isTrue(buttons === null);
-    });
-  });
-
-  suite('on-focus works', function() {
-    var buttons = Polymer.dom(datetimeButtonsDisplayOptionOnfocus.root).querySelector('#dtBtns');
-    suite('buttons are hidden',function(){
-      test('buttons hidden',function(){
-        assert.isTrue(buttons.classList.contains('visuallyhidden'));
-      });
+        //unwrap spy
+        range._focusFirstToEntry.restore();
+        done();
+      },100);
     });
 
-    updateDate(datetimeButtonsDisplayOptionOnfocus,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Applying a new datetime');
+    test('navigation from from to to doesnt trigger next-field from the outside', function(done) {
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          fromEntries = Polymer.dom(fields[0].root).querySelectorAll('px-datetime-entry'),
+          fromTimeCells = Polymer.dom(fromEntries[1].root).querySelectorAll('px-datetime-entry-cell');
 
-    suite('buttons are shown',function(){
-      test('buttons shown',function(){
-        assert.isFalse(buttons.classList.contains('visuallyhidden'));
-      });
-    })
-
-    applyDate(datetimeButtonsDisplayOptionOnfocus,'fromDate','from');
-
-    suite('buttons are hidden again',function(){
-      test('buttons hidden',function(){
-        assert.isTrue(buttons.classList.contains('visuallyhidden'));
-      });
-    });
-  });
-}
-
-function runAutoSubmitTests(){
-  var autoSubmit = document.getElementById('autoSubmit');
-  checkIfElemExists(autoSubmit,'autoSubmit');
-
-  updateDate(autoSubmit,'fromDate','06/04/2013','MM/DD/YYYY','from','Test Applying a new datetime');
-
-  suite('it auto submitted',function(){
-    test('from updated',function(done){
-      var assertions = function(){
-        assert.equal(autoSubmit.range.from, "2013-06-04T23:00:00.000Z");
+      var listener = function() {
+        range.removeEventListener('px-next-field', listener);
+        assert.isTrue(false);
         done();
       };
+      range.addEventListener('px-next-field', listener);
 
-      setTimeout(assertions, 501);
-    });
-  });
-}
+      fireKeyboardEvent(fromTimeCells[fromTimeCells.length - 1], 'ArrowRight');
 
-function runUtc(){
-  var hasUtc = document.getElementById('hasUtc');
-  checkIfElemExists(hasUtc,'hasUtc');
-
-  suite('it is utc',function(){
-    test('time input correct',function(){
-      var fromTime = hasUtc.$.fromTime
-      var dtImport = fromTime.$.dtImport
-      assert.equal(dtImport.value, "11:00:00 PM");
-    });
-
-    test('moment has _isUTC true',function(){
-      var fromTime = hasUtc.$.fromTime
-      assert.isTrue(fromTime.moment._isUTC);
-    });
-  });
-}
-
-function checkIfElemExists(elem,str) {
-  test(str + 'fixture is created', function() {
-    assert.isTrue(elem !== null);
-
-  });
-}
-
-function updateDate(parent, elem, date, format, field, text){
-  suite('Update ' + elem + text, function() {
-    var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
-    var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
-
-    setup(function(){
-      elemDate.dateTimeWorkingCopy = date;
-      elemDate._validateInput();
-    });
-
-    test('update '+elem,function(){
-      assert.equal(elemDate.moment.format(format),date);
-    });
-    test('added changed class',function(){
-      assert.isTrue(elemDiv.classList.contains('validation-changed'));
-    });
-  });
-}
-
-function applyDate(parent, elem, field){
-  var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
-  var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
-
-  suite('Apply ' + elem, function() {
-    test('apply changes updates range',function(){
-      var d = elemDate.moment.toISOString();
-      fireButtonClickApply(elemDate);
-      assert.equal(parent.range[field], d);
-    });
-
-    test('added applied class',function(){
-      assert.isTrue(elemDiv.classList.contains('validation-success'));
-    });
-  });
-}
-
-function cancelDate(parent, elem, field){
-  var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
-  var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
-  var range;
-
-  suite('Cancel ' + elem, function() {
-    test('cancel changes range remains the same',function(){
-      range = parent.range[field];
-      fireButtonClickCancel(elemDate);
-      assert.equal(parent.range[field], range);
-    });
-
-    test('cancel changes resets entry',function(){
-      assert.equal(elemDate.moment.toISOString(), range);
-    });
-
-    test('didnt add success class',function(){
-      assert.isFalse(elemDiv.classList.contains('validation-success'));
-    });
-
-    test('removed changed class',function(){
-      assert.isFalse(elemDiv.classList.contains('validation-changed'));
-    });
-  });
-}
-
-function invalidDate(parent, elem, field){
-  var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
-  var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
-  var elemInput = Polymer.dom(elemDate.root).querySelector('#dtImport');
-
-  suite('Apply wont work on' + elem, function() {
-    test('apply didnt go through',function(done){
-      var d = elemDate.moment.toISOString();
-      fireKeyboardEnter(elemInput);
-
-      var assertions = function(){
-        assert.equal(elemDate.moment.toISOString(), d);
+      setTimeout(function() {
+        range.removeEventListener('px-next-field', listener);
         done();
-      }
-
-      setTimeout(assertions,50);
+      }, 200);
     });
 
-    test('added invalid class',function(){
-      assert.isTrue(elemDiv.classList.contains('validation-error'));
-    });
-  });
-}
+    test('navigation from to to from', function(done) {
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          toEntries = Polymer.dom(fields[1].root).querySelectorAll('px-datetime-entry'),
+          todateCells = Polymer.dom(toEntries[0].root).querySelectorAll('px-datetime-entry-cell');
+      var spy = sinon.spy(range, '_focusLastFromEntry');
 
-function enterDate(parent, elem, field){
-  var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
-  var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
-  var elemInput = Polymer.dom(elemDate.root).querySelector('#dtImport');
+      fireKeyboardEvent(todateCells[0], 'ArrowLeft');
 
-  suite('Apply ' + elem, function() {
-    test('apply changes updates range',function(done){
-      var d = elemDate.moment.toISOString();
-      fireKeyboardEnter(elemInput);
+      setTimeout(function() {
+        assert.isTrue(spy.called);
 
-      var assertions = function(){
-        assert.equal(basic.range[field], d);
+        //unwrap spy
+        range._focusLastFromEntry.restore();
         done();
-      }
-
-      setTimeout(assertions,50);
+      },100);
     });
 
-    test('added applied class',function(){
-      assert.isTrue(elemDiv.classList.contains('validation-success'));
-    });
-  });
-}
+    test('navigation from to to from doesnt trigger previous-field from the outside', function(done) {
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          toEntries = Polymer.dom(fields[1].root).querySelectorAll('px-datetime-entry'),
+          todateCells = Polymer.dom(toEntries[0].root).querySelectorAll('px-datetime-entry-cell');
 
-function escDate(parent, elem, field){
-  var elemDiv = Polymer.dom(parent.root).querySelector('#'+field+'Fields');
-  var elemDate = Polymer.dom(parent.root).querySelector('#'+elem);
-  var elemInput = Polymer.dom(elemDate.root).querySelector('#dtImport');
+      var listener = function() {
+        range.removeEventListener('px-previous-field', listener);
+        assert.isTrue(false);
+        done();
+      };
+      range.addEventListener('px-previous-field', listener);
 
-  var range;
+      fireKeyboardEvent(todateCells[0], 'ArrowLeft');
 
-  suite('ESC ' + elem, function() {
-    test('ESC changes range remains the same',function(){
-      range = parent.range[field];
-      fireKeyboardEsc(elemInput);
-      assert.equal(parent.range[field], range);
-    });
-
-    test('ESC changes resets entry',function(){
-      assert.equal(elemDate.moment.toISOString(), range);
-    });
-
-    test('didnt add success class',function(){
-      assert.isFalse(elemDiv.classList.contains('validation-success'));
-    });
-
-    test('removed changed class',function(){
-      assert.isFalse(elemDiv.classList.contains('validation-changed'));
+      setTimeout(function() {
+        range.removeEventListener('px-previous-field', listener);
+        done();
+      }, 200);
     });
   });
-}
 
-function fireButtonClickApply(elem){
-  elem.fire('datetime-button-clicked', {'action':true});
-}
+  suite('submit without buttons', function() {
 
-function fireButtonClickCancel(elem){
-  elem.fire('datetime-button-clicked', {'action':false});
-}
+    suiteSetup(function(done) {
+      //make sure we focus 'to' field as nex tests work on 'to'
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          fromEntries = Polymer.dom(fields[0].root).querySelectorAll('px-datetime-entry'),
+          fromTimeCells = Polymer.dom(fromEntries[1].root).querySelectorAll('px-datetime-entry-cell');
 
-function fireKeyboardEnter(elem){
-  var evt = new CustomEvent('keydown',{detail:{'key':"Enter",'keyIdentifier':"Enter"}});
-   elem.dispatchEvent(evt);
-}
+      fireKeyboardEvent(fromTimeCells[fromTimeCells.length - 1], 'ArrowRight');
+      setTimeout(function() {
+        done();
+      },100);
+    });
 
-function fireKeyboardEsc(elem){
+    test('event is not fired when changing invalid value', function(done) {
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          toEntries = Polymer.dom(fields[1].root).querySelectorAll('px-datetime-entry'),
+          todateCells = Polymer.dom(toEntries[0].root).querySelectorAll('px-datetime-entry-cell'),
+          i=0;
 
-  var evt = new CustomEvent('keydown',{detail:{'key':"Esc",'keyIdentifier':"Enter"}});
+      var listener = function(evt) {
+        i++;
+
+        //make sure string has been kept in sync
+        assert.equal(range.fromMoment.toISOString(), range.range.from);
+        assert.equal(range.toMoment.toISOString(), range.range.to);
+      };
+
+      range.addEventListener('px-datetime-range-submitted', listener);
+
+      //invalid month, should not trigger event
+      fireKeyboardEvent(todateCells[1], '9');
+      fireKeyboardEvent(todateCells[1], '9');
+
+      setTimeout(function() {
+        assert.equal(i, 0);
+        assert.isFalse(range.isValid);
+        assert.isTrue(range._isRangeValid);
+        range.removeEventListener('px-datetime-range-submitted', listener);
+        done();
+      }, 100);
+    });
+
+    test('event is fired when changing valid value', function(done) {
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          toEntries = Polymer.dom(fields[1].root).querySelectorAll('px-datetime-entry'),
+          todateCells = Polymer.dom(toEntries[0].root).querySelectorAll('px-datetime-entry-cell'),
+          i = 0;
+
+      var listener = function(evt) {
+        i++;
+        //make sure string has been kept in sync
+        assert.equal(range.fromMoment.toISOString(), range.range.from);
+        assert.equal(range.toMoment.toISOString(), range.range.to);
+      };
+
+      range.addEventListener('px-datetime-range-submitted', listener);
+
+      //valid month, should trigger event
+      fireKeyboardEvent(todateCells[1], '1');
+      fireKeyboardEvent(todateCells[1], '2');
+
+      setTimeout(function() {
+        assert.equal(i, 1);
+        assert.isTrue(range.isValid);
+        assert.isTrue(range._isRangeValid);
+        range.removeEventListener('px-datetime-range-submitted', listener);
+        done();
+      }, 100);
+    });
+
+    test('datetime kept in sync when changing moment', function() {
+
+      range.fromMoment = moment.tz(moment("2013-04-07T00:00:00.000Z"), range.timeZone);
+      assert.equal(range.fromMoment.toISOString(), range.range.from);
+      range.toMoment = moment.tz(moment("2014-04-07T00:00:00.000Z"), range.timeZone);
+      assert.equal(range.toMoment.toISOString(), range.range.to);
+    });
+
+    test('moment kept in sync when changing datetime', function() {
+
+      range.range = {
+        from:"2012-04-07T00:00:00.000Z",
+        to:"2016-04-07T00:00:00.000Z"
+      };
+
+      assert.equal(range.fromMoment.toISOString(), range.range.from);
+      assert.equal(range.toMoment.toISOString(), range.range.to);
+    });
+  });
+
+  suite('submit with buttons', function() {
+
+    setup(function() {
+      range.showButtons = true;
+    });
+
+    test('event is not fired when changing valid value + buttons', function(done) {
+      var i = 0;
+
+      var listener = function(evt) {
+        i++;
+        //make sure string has been kept in sync
+        assert.isTrue(false);
+      };
+
+      range.addEventListener('px-datetime-range-submitted', listener);
+
+      //do a change
+      range.fromMoment = range.fromMoment.clone().subtract(1, 'month');
+
+      setTimeout(function() {
+        assert.equal(i, 0);
+        range.removeEventListener('px-datetime-range-submitted', listener);
+        done();
+      }, 100);
+    });
+
+    test('event is fired when pressing enter', function() {
+      var i = 0;
+
+      var listener = function(evt) {
+        i++;
+        //make sure string has been kept in sync
+        assert.equal(range.fromMoment.toISOString(), range.range.from);
+        assert.equal(range.toMoment.toISOString(), range.range.to);
+      };
+
+      range.addEventListener('px-datetime-range-submitted', listener);
+
+      //do a change
+      range.fromMoment = range.fromMoment.clone().subtract(1, 'month');
+
+      fireKeyboardEvent(range, 'Enter');
+
+      assert.equal(i, 1);
+      range.removeEventListener('px-datetime-submitted', listener);
+    });
+
+    test('event is fired when clicking apply', function() {
+      var datetimeButtons = Polymer.dom(range.root).querySelectorAll('px-datetime-buttons'),
+          buttons = Polymer.dom(datetimeButtons).node[0].querySelectorAll('button'),//??,
+          i = 0;
+
+      var listener = function(evt) {
+        i++;
+        //make sure string has been kept in sync
+        assert.equal(range.fromMoment.toISOString(), range.range.from);
+        assert.equal(range.toMoment.toISOString(), range.range.to);
+      };
+
+      range.addEventListener('px-datetime-range-submitted', listener);
+
+      //do a change
+      range.fromMoment = range.fromMoment.clone().subtract(1, 'month');
+
+      buttons[1].click();
+
+      assert.equal(i, 1);
+      range.removeEventListener('px-datetime-submitted', listener);
+    });
+
+    test('moment is rolledback when clicking cancel', function() {
+      var datetimeButtons = Polymer.dom(range.root).querySelectorAll('px-datetime-buttons'),
+          buttons = Polymer.dom(datetimeButtons).node[0].querySelectorAll('button'),//??,
+          prevFromMoment = range.fromMoment.clone(),
+          i = 0;
+
+      //do a change
+      range.fromMoment = range.fromMoment.clone().subtract(1, 'month');
+
+      assert.notEqual(range.fromMoment.toISOString(), prevFromMoment.toISOString());
+
+      buttons[0].click();
+
+      assert.equal(range.fromMoment.toISOString(), prevFromMoment.toISOString());
+    });
+
+    test('moment is rolledback when pressing esc', function() {
+      var datetimeButtons = Polymer.dom(range.root).querySelectorAll('px-datetime-buttons'),
+          buttons = Polymer.dom(datetimeButtons).node[0].querySelectorAll('button'),//??,
+          prevFromMoment = range.fromMoment.clone();
+      //do a change
+      range.fromMoment = range.fromMoment.clone().subtract(1, 'month');
+
+      assert.notEqual(range.fromMoment.toISOString(), prevFromMoment.toISOString());
+
+      fireKeyboardEvent(range, 'Esc');
+
+      assert.equal(range.fromMoment.toISOString(), prevFromMoment.toISOString());
+    });
+
+    test('datetime doesnt change with buttons', function() {
+      var datetimeButtons = Polymer.dom(range.root).querySelectorAll('px-datetime-buttons'),
+          buttons = Polymer.dom(datetimeButtons).node[0].querySelectorAll('button'),//??,
+          prevRangeFrom = range.range.from,
+          prevFromMoment = range.fromMoment.clone();
+
+      //do a change
+      range.fromMoment = range.fromMoment.clone().subtract(1, 'month');
+
+      //moment should have changed
+      assert.notEqual(range.fromMoment.toISOString(), prevFromMoment.toISOString());
+
+      //but not datetime
+      assert.equal(range.range.from, prevRangeFrom);
+    });
+   });
+
+
+  suite('validation', function() {
+    test('range wont allow range to be reversed', function(){
+      var fields = Polymer.dom(range.root).querySelectorAll('px-datetime-field'),
+          toEntries = Polymer.dom(fields[1].root).querySelectorAll('px-datetime-entry'),
+          todateCells = Polymer.dom(toEntries[0].root).querySelectorAll('px-datetime-entry-cell'),
+          i=0;
+
+      var listener = function(evt) {
+        i++;
+      };
+
+      range.addEventListener('px-datetime-range-submitted', listener);
+
+      //to date should be after before date
+      fireKeyboardEvent(todateCells[0], '1');
+      fireKeyboardEvent(todateCells[0], '2');
+      fireKeyboardEvent(todateCells[0], '2');
+      fireKeyboardEvent(todateCells[0], '2');
+
+      setTimeout(function() {
+        assert.equal(i, 0);
+        assert.isFalse(range.isValid);
+        assert.isFalse(range._isRangeValid);
+        range.removeEventListener('px-datetime-range-submitted', listener);
+        done();
+      }, 100);
+    });
+  });
+};
+
+function fireKeyboardEvent(elem, key){
+  var evt = new CustomEvent('keydown',{detail:{'key':key,'keyIdentifier':key}});
    elem.dispatchEvent(evt);
 }
