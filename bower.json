@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-range-field",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": [
     "px-datetime-range-field.html"
   ],
@@ -15,12 +15,10 @@
     "OSS_Notice.pdf"
   ],
   "dependencies": {
-    "moment": "#~2.10.6",
     "polymer": "#^1.5.0",
     "px-theme": "#~0.7.0",
     "px-datetime-common": "~0.3.0",
     "px-datetime-field": "~0.2.0"
-
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
@@ -29,6 +27,7 @@
     "px-tables-design": "#~0.3.12"
   },
   "resolutions": {
-    "polymer": "^1.5.0"
+    "polymer": "^1.5.0",
+    "moment": ">= 2.6.0"
   }
 }

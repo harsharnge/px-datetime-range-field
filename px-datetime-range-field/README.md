@@ -1,4 +1,4 @@
-Px-Datetime-Range-Field
+Px-Datetime-Range-Field [![Build Status](https://travis-ci.org/PredixDev/px-datetime-range-field.svg?branch=master)](https://travis-ci.org/PredixDev/px-datetime-range-field)
 -----------------------------------------------
 
 ## Overview
