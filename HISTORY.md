@@ -1,3 +1,11 @@
+v0.1.7
+==================
+* remove dependency on moment
+
+v0.1.6
+==================
+* rework to use px-datetime-field
+
 v0.1.5
 ==================
 * added oss_notice to bower ignore
