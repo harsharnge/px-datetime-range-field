@@ -1,3 +1,7 @@
+v0.1.8
+==================
+* bind time zone to both fields
+
 v0.1.7
 ==================
 * remove dependency on moment
