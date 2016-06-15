@@ -143,6 +143,7 @@ Px datetime component that displays and validates a date time range.
        */
       isValid: {
         type: Boolean,
+        notify: true,
         computed: '_getIsValid(_fromValid, _toValid, _isRangeValid)'
       },
       /**
