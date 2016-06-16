@@ -1,6 +1,13 @@
+v0.3.0
+==================
+* Upgrade to Polymer 1.5.0
+v0.2.1
+==================
+* Improve demo
+
 v0.2.0
 ==================
-* lot of changes toward first release
+* Lot of changes toward first release
 
 v0.1.1
 ==================

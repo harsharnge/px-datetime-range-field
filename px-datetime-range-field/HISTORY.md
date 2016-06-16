@@ -1,3 +1,11 @@
+v0.2.0
+==================
+* Upgrade to Polymer 1.5.0
+
+v0.1.8
+==================
+* bind time zone to both fields
+
 v0.1.7
 ==================
 * remove dependency on moment

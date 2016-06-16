@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-range-field",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "main": [
     "px-datetime-range-field.html"
   ],
@@ -16,9 +16,9 @@
   ],
   "dependencies": {
     "polymer": "#^1.5.0",
-    "px-theme": "#~0.7.0",
-    "px-datetime-common": "~0.3.0",
-    "px-datetime-field": "~0.2.0"
+    "px-theme": "#~0.8.0",
+    "px-datetime-common": "~0.4.0",
+    "px-datetime-field": "~0.3.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
@@ -26,17 +26,15 @@
     "px-forms-design": "#~0.3.15",
     "px-tables-design": "#~0.3.12"
   },
-  "resolutions": {
-    "polymer": "^1.5.0"
-  },
   "homepage": "https://github.com/predixDev/px-datetime-range-field",
-  "_release": "0.1.7",
+  "_release": "0.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v0.1.7",
-    "commit": "a83e8789fd8066688086d493c3d36d162e8c8886"
+    "tag": "v0.2.0",
+    "commit": "0da16bbbacbd05d32368b5ca5697a06452aa1ff4"
   },
   "_source": "https://github.com/predixDev/px-datetime-range-field.git",
-  "_target": "^0.1.6",
-  "_originalSource": "px-datetime-range-field"
+  "_target": "^0.2.0",
+  "_originalSource": "px-datetime-range-field",
+  "_direct": true
 }

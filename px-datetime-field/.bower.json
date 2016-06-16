@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-field",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": [
     "px-datetime-field.html"
   ],
@@ -14,9 +14,9 @@
     "test"
   ],
   "dependencies": {
-    "polymer": "^1.4.0",
-    "px-theme": "https://github.com/PredixDev/px-theme.git#~0.7.0",
-    "px-datetime-common": "~0.3.0",
+    "polymer": "^1.5.0",
+    "px-theme": "~0.8.0",
+    "px-datetime-common": "~0.4.0",
     "px-code-design": "^0.2.11"
   },
   "devDependencies": {
@@ -24,17 +24,14 @@
     "px-forms-design": "https://github.com/PredixDev/px-forms-design.git#~0.3.11",
     "px-starter-kit-design": "https://github.com/PredixDev/px-starter-kit-design.git#~0.4.9"
   },
-  "resolutions": {
-    "polymer": "^1.5.0"
-  },
   "homepage": "https://github.com/PredixDev/px-datetime-field",
-  "_release": "0.2.0",
+  "_release": "0.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "v0.2.0",
-    "commit": "14c83f69c1390f8e29263ddd72b7d8b72722a5cb"
+    "tag": "v0.3.0",
+    "commit": "cffd32233ec172e8fa4efefabb11ad1177e7a59f"
   },
   "_source": "https://github.com/PredixDev/px-datetime-field.git",
-  "_target": "~0.2.0",
+  "_target": "~0.3.0",
   "_originalSource": "px-datetime-field"
 }
