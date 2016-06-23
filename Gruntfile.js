@@ -24,7 +24,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'css/noprefix/px-datetime-range-field-sketch.css': 'sass/px-datetime-range-field-sketch.scss',
-                    'css/noprefix/px-datetime-range-field.css': 'sass/px-datetime-range-field-predix.scss'
+                    'css/noprefix/px-datetime-range-field.css': 'sass/px-datetime-range-field-predix.scss',
+                    'css/noprefix/px-datetime-range-field-demo.css': 'sass/px-datetime-range-field-demo.scss',
                 }
             }
         },
