@@ -21,7 +21,9 @@
     "px-datetime-field": "~0.3.0",
     "px-actionable-text-icons-design": "^0.0.3",
     "px-toggle-design": "^0.2.12",
-    "px-forms-design": "^0.3.16"
+    "px-forms-design": "^0.3.16",
+    "px-typography-design": "^0.3.5",
+    "px-headings-design": "^0.2.13"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",

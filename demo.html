@@ -41,7 +41,7 @@
       - If it has buttons then it is fired when the user clicks the apply button AND the date/time is valid<br>
       - If it doesn't have button then it is fired every time a change is made to the date/time AND the date/time is valid
       </p>
-  		<div class="flex flex--center">
+  		<div class="flex">
   			<img src="https://img.shields.io/travis/PredixDev/px-datetime-range-field.svg?style=flat-square" alt="Travis"/>
   			<img src="https://img.shields.io/bower/v/px-datetime-range-field.svg?style=flat-square" alt="Bower"/>
   			<img src="https://img.shields.io/github/issues-raw/PredixDev/px-datetime-range-field.svg?style=flat-square" alt="Issues"/>
@@ -51,53 +51,32 @@
     <br />
 
     <div style="position: relative;" class="mega-demo">
-
-      <span id="counter"><strong>px-datetime-range-submitted</strong> fired <strong>0</strong> time</span>
-      <br />
-      <br />
-
-      <div><strong>Current range object:</strong> From: <strong>{{range.from}}</strong> To: <strong>{{range.to}}</strong></div>
-
-      <br />
-      <br />
-
-      <px-datetime-range-field
-        id="range"
-        range="{{range}}"
-        date-format="{{dateFormat}}"
-        time-format="{{timeFormat}}"
-        show-buttons="{{showButtons}}"
-        block-future-dates="{{blockFutureDates}}"
-        hide-time="{{hideTime}}"
-        hide-date="{{hideDate}}"
-        show-time-zone="{{showTimeZone}}"
-        is-valid="{{isValid}}"
-        time-zone="{{timeZone}}">
-      </px-datetime-range-field>
-      <br>
-      <div class="properties">
-        <h3>Properties</h3>
-        <div >Hide time:
+      <div class="properties u-mr++">
+        <p class="epsilon">Properties</p>
+        <div class="flex u-mb-">
           <input id="toggleTime" class="toggle__input toggle__input--small" type="checkbox" checked="{{hideTime::change}}">
           <label for="toggleTime" class="toggle__label toggle__label--small"></label>
+          <div class="u-ml-">Hide time</div>
         </div>
-        <div>Hide date:
+        <div class="flex u-mb-">
           <input id="toggleDate" class="toggle__input toggle__input--small" type="checkbox" checked="{{hideDate::change}}">
           <label for="toggleDate" class="toggle__label toggle__label--small"></label>
+          <div class="u-ml-">Hide date</div>
         </div>
-        <div>Show buttons:
+        <div class="flex u-mb-">
           <input id="toggleButtons" class="toggle__input toggle__input--small" type="checkbox" checked="{{showButtons::change}}">
           <label for="toggleButtons" class="toggle__label toggle__label--small"></label>
+          <div class="u-ml-">Show buttons</div>
         </div>
-        <div>Block future dates
+        <div class="flex u-mb-">
           <input id="toggleFutureDates" class="toggle__input toggle__input--small" type="checkbox" checked="{{blockFutureDates::change}}">
           <label for="toggleFutureDates" class="toggle__label toggle__label--small"></label>
+          <div class="u-ml-">Block future dates</div>
         </div>
-        <div>Date format: <input id="dateFormat" class="text-input" type="text" placeholder="YYYY/MM/DD" value="{{dateFormat::input}}"></input></div>
-        <div>Time format: <input id="timeFormat" class="text-input" type="text" placeholder="hh:mm:ss A" value="{{timeFormat::input}}"></input></div>
-        <div>Time zone: <input id="timeZone" class="text-input" type="text" placeholder="UTC" value="{{timeZone::input}}"></input></div>
-        <div>Show time zone:
-          <!-- <input id="showTimeZone" type="text" value="{{showTimeZone::input}}"> -->
+        <div class="u-mb-">Date format: <input id="dateFormat" class="text-input" type="text" placeholder="YYYY/MM/DD" value="{{dateFormat::input}}"></input></div>
+        <div class="u-mb-">Time format: <input id="timeFormat" class="text-input" type="text" placeholder="hh:mm:ss A" value="{{timeFormat::input}}"></input></div>
+        <div class="u-mb-">Time zone: <input id="timeZone" class="text-input" type="text" placeholder="UTC" value="{{timeZone::input}}"></input></div>
+        <div class="u-mb-">Show time zone:
           <div style="width: 100px;">
             <px-dropdown id="showTimeZone" value="{{showTimeZone}}" display-value="none">
               <px-dropdown-content
@@ -117,9 +96,27 @@
         <div>More info on date and time format at <a href="http://momentjs.com/docs/#/parsing/string-format/" target="_blank" class="actionable">momentjs</a></div>
         <h3>Readonly Properties</h3>
         <div>Is Valid:
-          <input id="toggleValid" class="toggle__input toggle__input--small" type="checkbox" disabled checked="{{isValid::change}}">
-          <label for="toggleValid" class="toggle__label toggle__label--small"></label>
+          <input type="checkbox" disabled checked="{{isValid::change}}">
         </div>
+      </div>
+      <div>
+        <br />
+        <span id="counter"><strong>px-datetime-range-submitted</strong> fired <strong>0</strong> time</p>
+        <div><strong>Current range object:</strong> From: <strong>{{range.from}}</strong> To: <strong>{{range.to}}</strong></div>
+        <br />
+        <px-datetime-range-field
+          id="range"
+          range="{{range}}"
+          date-format="{{dateFormat}}"
+          time-format="{{timeFormat}}"
+          show-buttons="{{showButtons}}"
+          block-future-dates="{{blockFutureDates}}"
+          hide-time="{{hideTime}}"
+          hide-date="{{hideDate}}"
+          show-time-zone="{{showTimeZone}}"
+          is-valid="{{isValid}}"
+          time-zone="{{timeZone}}">
+        </px-datetime-range-field>
       </div>
     </div>
 
@@ -130,8 +127,6 @@
 
   <h2>Demo with code</h2>
 
-  <input id=toggle-small class="toggle__input toggle__input--small" type=checkbox>
-  <label for=toggle-small class="toggle__label toggle__label--small"></label>
   <br />
 
   <div style="width: 900px;">

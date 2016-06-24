@@ -31,6 +31,7 @@ Predix branding rules go in px-rangepicker-predix.scss, not in this file.
 @import "px-flexbox-design/_base.flexbox.scss";
 @import "px-viewport-design/_base.viewport.scss";
 @import "px-typography-design/_base.typography.scss";
+@import "px-headings-design/_base.headings.scss";
 
 body{
   margin: 40px;
@@ -62,6 +63,12 @@ $inuit-enable-input--regular : true;
 }
 
 // Trumps
+$inuit-enable-margins : true;
+$inuit-enable-margins--tiny : true;
+$inuit-enable-margins--small : true;
+$inuit-enable-margins--large : true;
+$inuit-enable-margins--huge : true;
+@import "px-spacing-design/_trumps.spacing.scss";
 @import "inuit-clearfix/_trumps.clearfix.scss";
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
 @import "px-widths-responsive-design/_trumps.widths-responsive.scss";
