@@ -75,35 +75,52 @@
         time-zone="{{timeZone}}">
       </px-datetime-range-field>
       <br>
-      <h3>Properties</h3>
-      <div>Hide time: <input type="checkbox" checked="{{hideTime::change}}"></input></div>
-      <div>Hide date: <input type="checkbox" checked="{{hideDate::change}}"></input></div>
-      <div>Show buttons: <input id="showButtons" type="checkbox" checked="{{showButtons::change}}"></input></div>
-      <div>Block future dates<input type="checkbox" checked="{{blockFutureDates::change}}"></input></div>
-      <div>Date format: <input id="dateFormat" type="text" value="{{dateFormat::input}}"></input></div>
-      <div>Time format: <input id="timeFormat" type="text" value="{{timeFormat::input}}"></input></div>
-      <div>Time zone: <input id="timeZone" type="text" value="{{timeZone::input}}"></input></div>
-      <div>Show time zone:
-        <!-- <input id="showTimeZone" type="text" value="{{showTimeZone::input}}"> -->
-        <div style="width: 100px;">
-          <px-dropdown id="showTimeZone" value="{{showTimeZone}}" display-value="none">
-            <px-dropdown-content
-              extend-dropdown="true"
-              extend-dropdown-by="25"
-              max-cont-character-width="20"
-              items='[
-                {"key":"one", "val": "none"},
-                {"key":"two", "val": "dropdown"},
-                {"key":"three", "val": "extendedDropdown"},
-                {"key":"four", "val": "text"},
-                {"key":"five", "val": "abbreviatedText"}]'>
-            </px-dropdown-content>
-          </px-dropdown>
+      <div class="properties">
+        <h3>Properties</h3>
+        <div >Hide time:
+          <input id="toggleTime" class="toggle__input toggle__input--small" type="checkbox" checked="{{hideTime::change}}">
+          <label for="toggleTime" class="toggle__label toggle__label--small"></label>
+        </div>
+        <div>Hide date:
+          <input id="toggleDate" class="toggle__input toggle__input--small" type="checkbox" checked="{{hideDate::change}}">
+          <label for="toggleDate" class="toggle__label toggle__label--small"></label>
+        </div>
+        <div>Show buttons:
+          <input id="toggleButtons" class="toggle__input toggle__input--small" type="checkbox" checked="{{showButtons::change}}">
+          <label for="toggleButtons" class="toggle__label toggle__label--small"></label>
+        </div>
+        <div>Block future dates
+          <input id="toggleFutureDates" class="toggle__input toggle__input--small" type="checkbox" checked="{{blockFutureDates::change}}">
+          <label for="toggleFutureDates" class="toggle__label toggle__label--small"></label>
+        </div>
+        <div>Date format: <input id="dateFormat" class="text-input" type="text" placeholder="YYYY/MM/DD" value="{{dateFormat::input}}"></input></div>
+        <div>Time format: <input id="timeFormat" class="text-input" type="text" placeholder="hh:mm:ss A" value="{{timeFormat::input}}"></input></div>
+        <div>Time zone: <input id="timeZone" class="text-input" type="text" placeholder="UTC" value="{{timeZone::input}}"></input></div>
+        <div>Show time zone:
+          <!-- <input id="showTimeZone" type="text" value="{{showTimeZone::input}}"> -->
+          <div style="width: 100px;">
+            <px-dropdown id="showTimeZone" value="{{showTimeZone}}" display-value="none">
+              <px-dropdown-content
+                extend-dropdown="true"
+                extend-dropdown-by="25"
+                max-cont-character-width="20"
+                items='[
+                  {"key":"one", "val": "none"},
+                  {"key":"two", "val": "dropdown"},
+                  {"key":"three", "val": "extendedDropdown"},
+                  {"key":"four", "val": "text"},
+                  {"key":"five", "val": "abbreviatedText"}]'>
+              </px-dropdown-content>
+            </px-dropdown>
+          </div>
+        </div>
+        <div>More info on date and time format at <a href="http://momentjs.com/docs/#/parsing/string-format/" target="_blank" class="actionable">momentjs</a></div>
+        <h3>Readonly Properties</h3>
+        <div>Is Valid:
+          <input id="toggleValid" class="toggle__input toggle__input--small" type="checkbox" disabled checked="{{isValid::change}}">
+          <label for="toggleValid" class="toggle__label toggle__label--small"></label>
         </div>
       </div>
-      <div>More info on date and time format at <a href="http://momentjs.com/docs/#/parsing/string-format/" target="_blank">momentjs</a></div>
-      <h3>Readonly Properties</h3>
-      <div>Is Valid: <input type="checkbox" disabled checked="{{isValid::change}}"></input></div>
     </div>
 
   </template>
@@ -113,7 +130,9 @@
 
   <h2>Demo with code</h2>
 
-
+  <input id=toggle-small class="toggle__input toggle__input--small" type=checkbox>
+  <label for=toggle-small class="toggle__label toggle__label--small"></label>
+  <br />
 
   <div style="width: 900px;">
     <demo-snippet>
@@ -137,7 +156,7 @@
           dateFormat = document.getElementById('dateFormat'),
           timeFormat = document.getElementById('timeFormat');
 
-      showButtons.checked = range.showButtons;
+      toggleButtons.checked = range.showButtons;
       dateFormat.value = range.dateFormat;
       timeFormat.value = range.timeFormat;
       range.range = {
