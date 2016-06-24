@@ -33,9 +33,7 @@ Predix branding rules go in px-rangepicker-predix.scss, not in this file.
 @import "px-typography-design/_base.typography.scss";
 @import "px-headings-design/_base.headings.scss";
 
-body{
-  margin: 40px;
-}
+
 
 // Objects
 $actionable : true;
@@ -50,8 +48,8 @@ $inuit-enable-input--regular : true;
 
 // Component
 .mega-demo{
-  background: #F3F3F3;
-  padding: 20px;
+  background: $gray1;
+
 }
 
 .description-text{
@@ -59,7 +57,15 @@ $inuit-enable-input--regular : true;
 }
 
 .properties{
-  width: 200px;
+  width: 350px;
+  background: $white;
+  border: 1px solid $gray4;
+}
+
+.demo{
+  width: 700px;
+  background: $white;
+  border: 1px solid $gray4;
 }
 
 // Trumps
@@ -68,6 +74,11 @@ $inuit-enable-margins--tiny : true;
 $inuit-enable-margins--small : true;
 $inuit-enable-margins--large : true;
 $inuit-enable-margins--huge : true;
+$inuit-enable-paddings : true;
+$inuit-enable-paddings--tiny : true;
+$inuit-enable-paddings--small : true;
+$inuit-enable-paddings--large : true;
+$inuit-enable-paddings--huge : true;
 @import "px-spacing-design/_trumps.spacing.scss";
 @import "inuit-clearfix/_trumps.clearfix.scss";
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";

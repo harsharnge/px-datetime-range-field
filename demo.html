@@ -29,8 +29,9 @@
       handle-as="json">
     </iron-ajax>
 
+    <!-- discription -->
     <div class="hero u-p++ text--shadow">
-  		<h1 class="beta">px-datetime-range-field</h1>
+  		<h1 class="delta">px-datetime-range-field</h1>
   		<p>
   			The	<code>px-datetime-range-field</code> component includes various elements used for structuring responsive layouts.
   		</p>
@@ -50,8 +51,11 @@
   	</div>
     <br />
 
-    <div style="position: relative;" class="mega-demo">
-      <div class="properties u-mr++">
+    <!-- mega demo -->
+    <div style="position: relative;" class="mega-demo u-p++ flex flex--left">
+
+      <!-- Properties -->
+      <div class="properties u-ph+ u-pb+ u-mr++">
         <p class="epsilon">Properties</p>
         <div class="flex u-mb-">
           <input id="toggleTime" class="toggle__input toggle__input--small" type="checkbox" checked="{{hideTime::change}}">
@@ -94,15 +98,19 @@
           </div>
         </div>
         <div>More info on date and time format at <a href="http://momentjs.com/docs/#/parsing/string-format/" target="_blank" class="actionable">momentjs</a></div>
-        <h3>Readonly Properties</h3>
+        <p class="epsilon">Readonly Properties</p>
         <div>Is Valid:
           <input type="checkbox" disabled checked="{{isValid::change}}">
         </div>
       </div>
-      <div>
+
+      <!-- demo -->
+      <div class="demo u-ph+ u-pb+">
         <br />
-        <span id="counter"><strong>px-datetime-range-submitted</strong> fired <strong>0</strong> time</p>
-        <div><strong>Current range object:</strong> From: <strong>{{range.from}}</strong> To: <strong>{{range.to}}</strong></div>
+        <span id="counter"><strong>px-datetime-range-submitted</strong> fired <strong>0</strong> time</span>
+        <div>
+          Current range object: From: <strong>{{range.from}}</strong> To: <strong>{{range.to}}</strong>
+        </div>
         <br />
         <px-datetime-range-field
           id="range"
@@ -122,24 +130,23 @@
 
   </template>
 
-  <br />
-  <br />
-
-  <h2>Demo with code</h2>
-
-  <br />
-
-  <div style="width: 900px;">
-    <demo-snippet>
-     <template>
-        <px-datetime-range-field
-          range= '{"from": "2000-12-14T02:00:00Z",
-                   "to": "2013-02-11T15:00:00Z"}'
-          time-format = "hh:mm:ss A">
-        </px-datetime-range-field>
-     </template>
-   </demo-snippet>
+  <!-- demo with code -->
+  <div class="u-p++">
+    <h2>Demo with code</h2>
+    <br />
+    <div style="width: 900px;">
+      <demo-snippet>
+       <template>
+          <px-datetime-range-field
+            range= '{"from": "2000-12-14T02:00:00Z",
+                     "to": "2013-02-11T15:00:00Z"}'
+            time-format = "hh:mm:ss A">
+          </px-datetime-range-field>
+       </template>
+     </demo-snippet>
+    </div>
   </div>
+
 
   <script type="text/javascript">
 
