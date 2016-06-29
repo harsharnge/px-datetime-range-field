@@ -35,7 +35,8 @@ Px datetime component that displays and validates a date time range.
           hide-time="[[hideTime]]"
           hide-date="[[hideDate]]"
           is-valid="{{_fromValid}}"
-          block-future-dates="{{blockFutureDates}}">
+          block-future-dates="{{blockFutureDates}}"
+          block-past-dates="{{blockPastDates}}">
         </px-datetime-field>
       </div>
       <span class="caps u-mh-">to</span>
@@ -50,7 +51,8 @@ Px datetime component that displays and validates a date time range.
           hide-time="[[hideTime]]"
           hide-date="[[hideDate]]"
           is-valid="{{_toValid}}"
-          block-future-dates="{{blockFutureDates}}">
+          block-future-dates="{{blockFutureDates}}"
+          block-past-dates="{{blockPastDates}}">
         </px-datetime-field>
         <template is="dom-if" if="{{!_isRangeValid}}">
           <div class="fa fa-fw validation-container u-ml--">
